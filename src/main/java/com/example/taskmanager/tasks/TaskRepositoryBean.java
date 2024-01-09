@@ -15,9 +15,9 @@ public class TaskRepositoryBean implements TaskRepository {
     private static final List<Task> taskList = new ArrayList<>();
 
     static {
-        taskList.add(new Task("task 1", "task 1 description", "cat 1", "status 1", UUID.randomUUID().toString()));
-        taskList.add(new Task("task 2", "task 2 description", "cat 1", "status 2", UUID.randomUUID().toString()));
-        taskList.add(new Task("task 3", "task 3 description", "cat 1", "status 3", UUID.randomUUID().toString()));
+        taskList.add(new Task("task 1", "task 1 description", "cat 1", "status 1", "559ffa0a-5bb7-4207-a14e-93090623dec8"));
+        taskList.add(new Task("task 2", "task 2 description", "cat 1", "status 2", "559ffa0a-5bb7-4207-a14e-93090623dec7"));
+        taskList.add(new Task("task 3", "task 3 description", "cat 1", "status 3", "559ffa0a-5bb7-4207-a14e-93090623dec9"));
     }
     @Override
     public Collection<Task> findAll() {
