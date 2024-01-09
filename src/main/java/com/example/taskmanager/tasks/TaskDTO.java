@@ -1,23 +1,19 @@
 package com.example.taskmanager.tasks;
 
-import java.sql.Timestamp;
-
 public class TaskDTO {
     private String uuid;
     private String name;
     private String description;
     private String category;
-    private Timestamp endedDate;
     private String status;
 
     public TaskDTO() {}
 
-    public TaskDTO(String uuid, String name, String description, String category, Timestamp endedDate, String status) {
+    public TaskDTO(String uuid, String name, String description, String category, String status) {
         this.uuid = uuid;
         this.name = name;
         this.description = description;
         this.category = category;
-        this.endedDate = endedDate;
         this.status = status;
     }
 
@@ -51,14 +47,6 @@ public class TaskDTO {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public Timestamp getEndedDate() {
-        return endedDate;
-    }
-
-    public void setEndedDate(Timestamp endedDate) {
-        this.endedDate = endedDate;
     }
 
     public String getStatus() {
