@@ -10,7 +10,7 @@ public interface TaskService {
 
     TaskDTO edit(TaskDTO dto);
 
-    TaskDTO getOne(String taskId);
+    TaskDTO getOne(String uuid);
 
-    TaskDTO delete(String taskId);
+    TaskDTO delete(String uuid);
 }

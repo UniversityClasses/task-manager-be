@@ -27,23 +27,21 @@ public class TaskController {
 
     @PostMapping
     public TaskDTO create(@RequestBody TaskDTO dto) {
-
         return taskService.create(dto);
     }
 
-    @GetMapping("/{taskId}")
-    public TaskDTO getOne(@PathVariable String taskId) {
-        return taskService.getOne(taskId);
+    @GetMapping("/{uuid}")
+    public TaskDTO getOne(@PathVariable String uuid) {
+        return taskService.getOne(uuid);
     }
 
     @PutMapping
     public TaskDTO edit(@RequestBody TaskDTO dto) {
-
         return taskService.edit(dto);
     }
 
-    @DeleteMapping("/{taskId}")
-    public TaskDTO delete(@PathVariable String taskId) {
-        return taskService.delete(taskId);
+    @DeleteMapping("/{uuid}")
+    public TaskDTO delete(@PathVariable String uuid) {
+        return taskService.delete(uuid);
     }
 }

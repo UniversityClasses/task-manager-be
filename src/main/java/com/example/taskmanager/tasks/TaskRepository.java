@@ -11,4 +11,8 @@ public interface TaskRepository {
     Task save(Task task);
 
     Optional<Task> findOne(Example<Task> of);
+
+    void delete(Task task);
+
+    Task findOneByUuid(String uuid);
 }

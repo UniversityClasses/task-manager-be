@@ -37,23 +37,46 @@ public class TaskServiceBean implements TaskService {
         Task example1 = new Task(taskDTO.getUuid());
         Optional<Task> optionalTask = taskRepository.findOne(Example.of(example1));
 
+        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
+
         Task task = optionalTask.get();
+        task.setDescription(taskDTO.getDescription());
         task.setName(taskDTO.getName());
-        task.setDescription(taskDTO.getName());
-        task.setCategory(taskDTO.getCategory());
         task.setStatus(taskDTO.getStatus());
+        task.setCategory(taskDTO.getCategory());
 
         taskRepository.save(task);
         return mapper.toDTO(task);
     }
 
     @Override
-    public TaskDTO getOne(String taskId) {
-        return null;
+    public TaskDTO getOne(String uuid) {
+        Task task = getTask(uuid);
+        
+        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
+
+
+        return mapper.toDTO(task);
     }
 
     @Override
-    public TaskDTO delete(String taskId) {
-        return null;
+    public TaskDTO delete(String uuid) {
+        Task example1 = new Task(uuid);
+        Optional<Task> optionalTask = taskRepository.findOne(Example.of(example1));
+
+        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
+
+        Task task = optionalTask.get();
+        taskRepository.delete(task);
+
+        return mapper.toDTO(task);
+    }
+
+
+    private Task getTask(String uuid) {
+        Task task = taskRepository.findOneByUuid(uuid);
+        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
+
+        return task;
     }
 }
