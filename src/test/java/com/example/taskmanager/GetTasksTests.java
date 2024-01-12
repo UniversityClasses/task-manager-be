@@ -23,9 +23,9 @@ public class GetTasksTests {
     private static final List<Task> taskList = new ArrayList<>();
 
     static {
-        taskList.add(new Task("task 1", "task 1 description", "cat 1", "status 1", UUID.randomUUID().toString()));
-        taskList.add(new Task("task 2", "task 2 description", "cat 1", "status 2", UUID.randomUUID().toString()));
-        taskList.add(new Task("task 3", "task 3 description", "cat 1", "status 3", UUID.randomUUID().toString()));
+        taskList.add(new Task("task 1", "task 1 description", "cat 1", "status 1", UUID.randomUUID().toString(),false));
+        taskList.add(new Task("task 2", "task 2 description", "cat 1", "status 2", UUID.randomUUID().toString(),false));
+        taskList.add(new Task("task 3", "task 3 description", "cat 1", "status 3", UUID.randomUUID().toString(),false));
     }
     @Autowired
     private MockMvc mockMvc;
