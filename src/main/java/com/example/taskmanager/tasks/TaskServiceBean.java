@@ -1,5 +1,6 @@
 package com.example.taskmanager.tasks;
 
+import com.example.taskmanager.exceptions.TaskNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
@@ -38,8 +39,9 @@ public class TaskServiceBean implements TaskService {
         Optional<Task> optionalTask = taskRepository.findOne(Example.of(example1));
 
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
+        Task task = optionalTask.orElseThrow(() -> new TaskNotFoundException("task Not Found with UUID: " + taskDTO.getUuid()));
 
-        Task task = optionalTask.get();
+        //Task task = optionalTask.get();
         task.setDescription(taskDTO.getDescription());
         task.setName(taskDTO.getName());
         task.setStatus(taskDTO.getStatus());
@@ -54,7 +56,9 @@ public class TaskServiceBean implements TaskService {
         Task task = getTask(uuid);
         
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
-
+        if (task == null){
+            throw new TaskNotFoundException("task Not Found with UUID: " + uuid);
+        }
 
         return mapper.toDTO(task);
     }
@@ -65,8 +69,9 @@ public class TaskServiceBean implements TaskService {
         Optional<Task> optionalTask = taskRepository.findOne(Example.of(example1));
 
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
+        Task task = optionalTask.orElseThrow(() -> new TaskNotFoundException("task Not Found with UUID: " + uuid));
 
-        Task task = optionalTask.get();
+        //Task task = optionalTask.get();
         taskRepository.delete(task);
 
         return mapper.toDTO(task);
@@ -76,7 +81,9 @@ public class TaskServiceBean implements TaskService {
     private Task getTask(String uuid) {
         Task task = taskRepository.findOneByUuid(uuid);
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
-
+        if (task == null){
+            throw new TaskNotFoundException("task Not Found with UUID: " + uuid);
+        }
         return task;
     }
 }

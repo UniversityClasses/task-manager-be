@@ -1,5 +1,6 @@
 package com.example.taskmanager.tasks;
 
+import com.example.taskmanager.exceptions.TaskNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class TaskController {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(task);
-        } catch(Exception exception) {
+        } catch(TaskNotFoundException exception) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);

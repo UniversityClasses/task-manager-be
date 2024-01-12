@@ -1,6 +1,8 @@
 package com.example.taskmanager.categories;
 
+import com.example.taskmanager.exceptions.CategoryNotFoundExeption;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,31 +26,46 @@ public class CategoryController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<CategoryDTO> getOne(@PathVariable String uuid) {
-        CategoryDTO categoryDtoSearched = categoryService.getOne(uuid);
-        if (categoryDtoSearched != null) {
-            return ResponseEntity.ok(categoryDtoSearched);
-        } else {
-            return ResponseEntity.notFound().build();
+        try{
+            CategoryDTO categoryDtoSearched = categoryService.getOne(uuid);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(categoryDtoSearched);
+        }
+        catch(CategoryNotFoundExeption exeption){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(null);
         }
     }
 
     @PutMapping
     public ResponseEntity<CategoryDTO> edit(@RequestBody CategoryDTO dto) {
-        CategoryDTO categoryDtoEdited = categoryService.edit(dto);
-        if (categoryDtoEdited != null) {
-            return ResponseEntity.ok(categoryDtoEdited);
-        } else {
-            return ResponseEntity.notFound().build();
+        try{
+            CategoryDTO categoryDtoEdited = categoryService.edit(dto);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(categoryDtoEdited);
+        }
+        catch(CategoryNotFoundExeption exeption){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(null);
         }
     }
 
     @DeleteMapping("/{uuid}")
     public ResponseEntity<CategoryDTO> delete(@PathVariable  String uuid) {
-        CategoryDTO categoryDtoDeleted = categoryService.delete(uuid);
-        if (categoryDtoDeleted != null) {
-            return ResponseEntity.ok(categoryDtoDeleted);
-        } else {
-            return ResponseEntity.notFound().build();
+        try{
+            CategoryDTO categoryDtoDeleted = categoryService.delete(uuid);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(categoryDtoDeleted);
+        }
+        catch(CategoryNotFoundExeption exeption){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(null);
         }
     }
 }

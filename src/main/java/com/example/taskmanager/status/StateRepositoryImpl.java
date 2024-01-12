@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 
 @Component
 public class StateRepositoryImpl implements StateRepository{
-    public List<State> states = new ArrayList<>(Arrays.asList(
-            new State("1est","State1","description1",false),
-            new State("2est","State2","description2",false),
-            new State("3est","State3","description3",true)
+    public static final List<State> states = new ArrayList<>(Arrays.asList(
+            new State("state559ffa0a-5bb7-4207-a14e-93090623dec1","State1","description1",false),
+            new State("state559ffa0a-5bb7-4207-a14e-93090623dec2","State2","description2",false),
+            new State("state559ffa0a-5bb7-4207-a14e-93090623dec3","State3","description3",true)
     ));
     @Override
     public Collection<State> findAll() {

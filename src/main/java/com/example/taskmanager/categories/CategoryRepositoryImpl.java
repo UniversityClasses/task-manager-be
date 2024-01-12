@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 @Component
 public class CategoryRepositoryImpl implements CategoryRepository{
     
-    public List<Category> categorys = new ArrayList<>(Arrays.asList(
-            new Category("1cat","Category1","description1",false),
-            new Category("2cat","Category2","description2",false),
-            new Category("3cat","Category3","description3",true)
+    public static final List<Category> categorys = new ArrayList<>(Arrays.asList(
+            new Category("category559ffa0a-5bb7-4207-a14e-93090623dec1","Category1","description1",false),
+            new Category("category559ffa0a-5bb7-4207-a14e-93090623dec2","Category2","description2",false),
+            new Category("category559ffa0a-5bb7-4207-a14e-93090623dec3","Category3","description3",true)
     ));
     @Override
     public Collection<Category> findAll() {

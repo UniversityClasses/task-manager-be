@@ -1,9 +1,14 @@
 package com.example.taskmanager.categories;
 
+import com.example.taskmanager.exceptions.CategoryNotFoundExeption;
+import com.example.taskmanager.exceptions.StateNotFoundExeption;
+import com.example.taskmanager.status.State;
+import com.example.taskmanager.status.StateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -49,11 +54,9 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryDTO delete(String uuid) {
-        Category categorySearched = categoryRepository.getByUUID(uuid);
-        if (categorySearched != null){
-            Category deletedCategory = categoryRepository.delete(categorySearched);
-            return mapper.toDTO(deletedCategory);
-        }
-        else return null;
+        Optional<Category> optionalCategory = Optional.ofNullable(categoryRepository.getByUUID(uuid));
+        Category stateSearched = optionalCategory.orElseThrow(() -> new CategoryNotFoundExeption("State Not Found with UUID: " + uuid));
+        Category categoryDeleted = categoryRepository.delete(stateSearched);
+        return mapper.toDTO(categoryDeleted);
     }
 }
