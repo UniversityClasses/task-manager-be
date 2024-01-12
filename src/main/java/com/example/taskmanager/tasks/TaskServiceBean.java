@@ -44,8 +44,8 @@ public class TaskServiceBean implements TaskService {
         task.setName(taskDTO.getName());
         task.setStatus(taskDTO.getStatus());
         task.setCategory(taskDTO.getCategory());
-
-        taskRepository.save(task);
+        task.setDeleted(taskDTO.isDeleted());
+        //taskRepository.save(task);
         return mapper.toDTO(task);
     }
 

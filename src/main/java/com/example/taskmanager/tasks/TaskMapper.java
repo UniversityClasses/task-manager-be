@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskMapper {
     public TaskDTO toDTO(Task task) {
-        return new TaskDTO(task.getUuid(), task.getName(), task.getDescription(), task.getCategory(), task.getStatus());
+        return new TaskDTO(task.getUuid(), task.getName(), task.getDescription(), task.getCategory(), task.getStatus(), task.isDeleted());
     }
 
     public Task toModel(TaskDTO dto) {
-        return new Task(dto.getName(), dto.getDescription(), dto.getCategory(), dto.getStatus(), dto.getUuid());
+        return new Task(dto.getName(), dto.getDescription(), dto.getCategory(), dto.getStatus(), dto.getUuid(),dto.isDeleted());
     }
 }
