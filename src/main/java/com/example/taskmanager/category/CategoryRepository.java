@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface CategoryRepository {
+
     Collection<Category> findAll();
 
     Category save(Category category);
