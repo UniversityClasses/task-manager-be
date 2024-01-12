@@ -49,7 +49,7 @@ public class CategoryServiceBean implements CategoryService {
 
     @Override
     public CategoryDTO getOne(String uuid) {
-        Category category = getTask(uuid);
+        Category category = getCategory(uuid);
         
         // TODO: ADD EXCEPTION WHEN CATEGORY DO NOT EXIST.
 
@@ -60,18 +60,18 @@ public class CategoryServiceBean implements CategoryService {
     @Override
     public CategoryDTO delete(String uuid) {
         Category example1 = new Category(uuid);
-        Optional<Category> optionalTask = categoryRepository.findOne(Example.of(example1));
+        Optional<Category> optionalCategory = categoryRepository.findOne(Example.of(example1));
 
         // TODO: ADD EXCEPTION WHEN CATEGORY DO NOT EXIST.
 
-        Category category = optionalTask.get();
+        Category category = optionalCategory.get();
         categoryRepository.delete(category);
 
         return mapper.toDTO(category);
     }
 
 
-    private Category getTask(String uuid) {
+    private Category getCategory(String uuid) {
         Category category = categoryRepository.findOneByUuid(uuid);
         // TODO: ADD EXCEPTION WHEN CATEGORY DO NOT EXIST.
 
