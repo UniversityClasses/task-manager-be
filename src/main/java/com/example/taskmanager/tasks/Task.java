@@ -1,19 +1,50 @@
 package com.example.taskmanager.tasks;
 
-import java.sql.Timestamp;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
+import jakarta.persistence.PrePersist;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import java.sql.Timestamp;
+import java.util.UUID;
+
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+@EnableJpaAuditing
 public class Task {
-    private String taskId;
+    @Id
+    @GeneratedValue
+    private Long taskId;
+    @Column(nullable = false, length = 200)
     private String name;
+    @Column(nullable = false, length = 2000)
     private String description;
+    @Column(nullable = false, length = 100)
     private String category;
-    private Timestamp endedDate;
+    @Column(nullable = false, length = 100)
     private String status;
+    @Column(updatable = false, nullable = false, unique = true, length = 36)
     private String uuid;
+    @CreatedDate
+    @Column(updatable = false, columnDefinition = "timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP")
     private Timestamp createdDate;
+    @LastModifiedDate
+    @Column(columnDefinition = "timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP")
     private Timestamp modifiedDate;
+    @CreatedBy
     private Integer createdBy;
+    @LastModifiedBy
     private Integer modifiedBy;
+    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT '0'")
     private boolean deleted;
 
     public Task(String uuid) {
@@ -28,11 +59,14 @@ public class Task {
         this.uuid = uuid;
     }
 
-    public String getTaskId() {
+    public Task() {
+    }
+
+    public Long getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(String taskId) {
+    public void setTaskId(Long taskId) {
         this.taskId = taskId;
     }
 
@@ -60,13 +94,6 @@ public class Task {
         this.category = category;
     }
 
-    public Timestamp getEndedDate() {
-        return endedDate;
-    }
-
-    public void setEndedDate(Timestamp endedDate) {
-        this.endedDate = endedDate;
-    }
 
     public String getStatus() {
         return status;
@@ -122,5 +149,10 @@ public class Task {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    @PrePersist
+    public void initializeUuid() {
+        this.setUuid(UUID.randomUUID().toString());
     }
 }

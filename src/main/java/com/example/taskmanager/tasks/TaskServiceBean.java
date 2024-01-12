@@ -1,7 +1,6 @@
 package com.example.taskmanager.tasks;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -34,8 +33,7 @@ public class TaskServiceBean implements TaskService {
 
     @Override
     public TaskDTO edit(TaskDTO taskDTO) {
-        Task example1 = new Task(taskDTO.getUuid());
-        Optional<Task> optionalTask = taskRepository.findOne(Example.of(example1));
+        Optional<Task> optionalTask = taskRepository.getTaskByUuid(taskDTO.getUuid());
 
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
@@ -51,18 +49,17 @@ public class TaskServiceBean implements TaskService {
 
     @Override
     public TaskDTO getOne(String uuid) {
-        Task task = getTask(uuid);
+        Optional<Task> task = taskRepository.getTaskByUuid(uuid);
         
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
 
-        return mapper.toDTO(task);
+        return mapper.toDTO(task.get());
     }
 
     @Override
     public TaskDTO delete(String uuid) {
-        Task example1 = new Task(uuid);
-        Optional<Task> optionalTask = taskRepository.findOne(Example.of(example1));
+        Optional<Task> optionalTask = taskRepository.getTaskByUuid(uuid);
 
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
@@ -70,13 +67,5 @@ public class TaskServiceBean implements TaskService {
         taskRepository.delete(task);
 
         return mapper.toDTO(task);
-    }
-
-
-    private Task getTask(String uuid) {
-        Task task = taskRepository.findOneByUuid(uuid);
-        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
-
-        return task;
     }
 }

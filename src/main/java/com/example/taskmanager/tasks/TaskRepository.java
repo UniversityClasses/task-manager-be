@@ -1,18 +1,12 @@
 package com.example.taskmanager.tasks;
 
 import org.springframework.data.domain.Example;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
 import java.util.Optional;
 
-public interface TaskRepository {
-    Collection<Task> findAll();
+public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    Task save(Task task);
-
-    Optional<Task> findOne(Example<Task> of);
-
-    void delete(Task task);
-
-    Task findOneByUuid(String uuid);
+    Optional<Task> getTaskByUuid(String uuid);
 }
