@@ -31,7 +31,7 @@ public class TaskServiceBeanTest {
     @Test
     public void testGetAll() {
         // Arrange
-        when(taskRepository.findAll()).thenReturn(Collections.singletonList(new Task("uuid", "TaskName", "TaskDescription", "Category", "Status")));
+        when(taskRepository.findAll()).thenReturn(Collections.singletonList(new Task("uuid", "TaskName", "TaskDescription", "Category", "Status",false)));
 
         // Act
         taskService.getAll();
@@ -44,8 +44,8 @@ public class TaskServiceBeanTest {
     @Test
     public void testCreate() {
         // Arrange
-        TaskDTO taskDTO = new TaskDTO("uuid", "TaskName", "TaskDescription", "Category", "Status");
-        Task task = new Task("uuid", "TaskName", "TaskDescription", "Category", "Status");
+        TaskDTO taskDTO = new TaskDTO("uuid", "TaskName", "TaskDescription", "Category", "Status",false);
+        Task task = new Task("uuid", "TaskName", "TaskDescription", "Category", "Status",false);
 
         when(taskMapper.toModel(taskDTO)).thenReturn(task);
         when(taskRepository.save(task)).thenReturn(task);
@@ -63,8 +63,8 @@ public class TaskServiceBeanTest {
     @Test
     public void testEdit() {
         // Arrange
-        TaskDTO taskDTO = new TaskDTO("uuid", "UpdatedTaskName", "UpdatedTaskDescription", "UpdatedCategory", "UpdatedStatus");
-        Task existingTask = new Task("uuid", "TaskName", "TaskDescription", "Category", "Status");
+        TaskDTO taskDTO = new TaskDTO("uuid", "UpdatedTaskName", "UpdatedTaskDescription", "UpdatedCategory", "UpdatedStatus",false);
+        Task existingTask = new Task("uuid", "TaskName", "TaskDescription", "Category", "Status",false);
 
         when(taskRepository.findOne(any())).thenReturn(Optional.of(existingTask));
         when(taskRepository.save(existingTask)).thenReturn(existingTask);
@@ -82,7 +82,7 @@ public class TaskServiceBeanTest {
     @Test
     public void testEditTaskNotFound() {
         // Arrange
-        TaskDTO taskDTO = new TaskDTO("uuid", "UpdatedTaskName", "UpdatedTaskDescription", "UpdatedCategory", "UpdatedStatus");
+        TaskDTO taskDTO = new TaskDTO("uuid", "UpdatedTaskName", "UpdatedTaskDescription", "UpdatedCategory", "UpdatedStatus",false);
 
         when(taskRepository.findOne(any())).thenReturn(Optional.empty());
 

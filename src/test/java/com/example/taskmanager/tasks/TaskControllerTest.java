@@ -26,8 +26,8 @@ public class TaskControllerTest {
     public void testGetAll() {
         // Arrange
         List<TaskDTO> mockTaskList = Arrays.asList(
-                new TaskDTO("1", "New Task 1", "description", "category", "status"),
-                new TaskDTO("2", "New Task 2", "description", "category", "status")
+                new TaskDTO("1", "New Task 1", "description", "category", "status",false),
+                new TaskDTO("2", "New Task 2", "description", "category", "status",false)
         );
         Mockito.when(taskService.getAll()).thenReturn(mockTaskList);
 
@@ -41,7 +41,7 @@ public class TaskControllerTest {
     @Test
     public void testCreate() {
         // Arrange
-        TaskDTO inputTaskDTO = new TaskDTO("1", "New Task", "description", "category", "status");
+        TaskDTO inputTaskDTO = new TaskDTO("1", "New Task", "description", "category", "status",false);
         Mockito.when(taskService.create(inputTaskDTO)).thenReturn(inputTaskDTO);
 
         // Act
@@ -55,7 +55,7 @@ public class TaskControllerTest {
     public void testGetOne() {
         // Arrange
         String taskUuid = "1";
-        TaskDTO mockTask = new TaskDTO(taskUuid, "New Task", "description", "category", "status");
+        TaskDTO mockTask = new TaskDTO(taskUuid, "New Task", "description", "category", "status",false);
         Mockito.when(taskService.getOne(taskUuid)).thenReturn(mockTask);
 
         // Act
@@ -84,7 +84,7 @@ public class TaskControllerTest {
     @Test
     public void testEdit() {
         // Arrange
-        TaskDTO inputTaskDTO = new TaskDTO("1", "Updated Task", "description", "category", "status");
+        TaskDTO inputTaskDTO = new TaskDTO("1", "Updated Task", "description", "category", "status",false);
         Mockito.when(taskService.edit(inputTaskDTO)).thenReturn(inputTaskDTO);
 
         // Act
@@ -98,7 +98,7 @@ public class TaskControllerTest {
     public void testDelete() {
         // Arrange
         String taskUuid = "1";
-        TaskDTO mockDeletedTask = new TaskDTO(taskUuid, "Deleted Task", "description", "category", "status");
+        TaskDTO mockDeletedTask = new TaskDTO(taskUuid, "Deleted Task", "description", "category", "status",false);
         Mockito.when(taskService.delete(taskUuid)).thenReturn(mockDeletedTask);
 
         // Act

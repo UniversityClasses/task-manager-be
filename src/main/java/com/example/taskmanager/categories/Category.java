@@ -12,4 +12,7 @@ public class Category extends ModelBase {
         super.setDeleted(deleted);
     }
     public Category() {}
+    public Category(String name) {
+        super.setName(name);
+    }
 }

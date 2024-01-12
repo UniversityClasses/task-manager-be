@@ -1,6 +1,8 @@
 package com.example.taskmanager.tasks;
 
+import com.example.taskmanager.categories.Category;
 import com.example.taskmanager.exceptions.TaskNotFoundException;
+import com.example.taskmanager.status.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
@@ -44,8 +46,8 @@ public class TaskServiceBean implements TaskService {
         //Task task = optionalTask.get();
         task.setDescription(taskDTO.getDescription());
         task.setName(taskDTO.getName());
-        task.setStatus(taskDTO.getStatus());
-        task.setCategory(taskDTO.getCategory());
+        task.setState(new State(taskDTO.getState()));
+        task.setCategory(new Category(taskDTO.getCategory()));
         task.setDeleted(taskDTO.isDeleted());
         //taskRepository.save(task);
         return mapper.toDTO(task);

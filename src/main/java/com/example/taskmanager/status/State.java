@@ -13,4 +13,7 @@ public class State extends ModelBase {
         super.setDeleted(deleted);
     }
     public State() {}
+    public State(String name) {
+        super.setName(name);
+    }
 }
