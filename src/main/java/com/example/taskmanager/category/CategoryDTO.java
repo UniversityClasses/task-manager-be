@@ -4,7 +4,6 @@ public class CategoryDTO {
     private String uuid;
     private String name;
     private String description;
-
     public CategoryDTO() {}
 
     public CategoryDTO(String uuid, String name, String description) {
@@ -36,4 +35,5 @@ public class CategoryDTO {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

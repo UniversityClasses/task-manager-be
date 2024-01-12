@@ -14,13 +14,13 @@ public class Category {
     private boolean deleted;
 
     public Category(String uuid) {
-        this.uuid = uuid;
+        this.uuid=uuid;
     }
 
     public Category(String name, String description, String uuid) {
         this.name = name;
         this.description = description;
-        this.uuid = uuid;
+        this.uuid=uuid;
     }
 
     public String getCategoryId() {

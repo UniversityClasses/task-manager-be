@@ -52,8 +52,6 @@ public class CategoryServiceBean implements CategoryService {
         Category category = getCategory(uuid);
         
         // TODO: ADD EXCEPTION WHEN CATEGORY DO NOT EXIST.
-
-
         return mapper.toDTO(category);
     }
 

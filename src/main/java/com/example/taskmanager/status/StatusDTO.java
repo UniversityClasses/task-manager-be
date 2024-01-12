@@ -3,6 +3,7 @@ package com.example.taskmanager.status;
 public class StatusDTO {
     private String uuid;
     private String name;
+
     public StatusDTO() {}
 
     public StatusDTO(String uuid, String name) {
@@ -25,5 +26,4 @@ public class StatusDTO {
     public void setName(String name) {
         this.name = name;
     }
-
 }

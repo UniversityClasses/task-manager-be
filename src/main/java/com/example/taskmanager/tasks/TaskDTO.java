@@ -1,15 +1,18 @@
 package com.example.taskmanager.tasks;
 
+import com.example.taskmanager.category.CategoryDTO;
+import com.example.taskmanager.status.StatusDTO;
+
 public class TaskDTO {
     private String uuid;
     private String name;
     private String description;
-    private String category;
-    private String status;
+    private CategoryDTO category;
+    private StatusDTO status;
 
     public TaskDTO() {}
 
-    public TaskDTO(String uuid, String name, String description, String category, String status) {
+    public TaskDTO(String uuid, String name, String description, CategoryDTO category, StatusDTO status) {
         this.uuid = uuid;
         this.name = name;
         this.description = description;
@@ -41,19 +44,19 @@ public class TaskDTO {
         this.description = description;
     }
 
-    public String getCategory() {
+    public CategoryDTO getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(CategoryDTO category) {
         this.category = category;
     }
 
-    public String getStatus() {
+    public StatusDTO getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusDTO status) {
         this.status = status;
     }
 }

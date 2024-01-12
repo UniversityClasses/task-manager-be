@@ -49,10 +49,7 @@ public class StatusServiceBean implements StatusService {
     @Override
     public StatusDTO getOne(String uuid) {
         Status status = getStatus(uuid);
-        
-        // TODO: ADD EXCEPTION WHEN STATUS DO NOT EXIST.
-
-
+        // TODO: ADD EXCEPTION WHEN STATUS DO NOT EXIST
         return mapper.toDTO(status);
     }
 
@@ -73,7 +70,6 @@ public class StatusServiceBean implements StatusService {
     private Status getStatus(String uuid) {
         Status status = statusRepository.findOneByUuid(uuid);
         // TODO: ADD EXCEPTION WHEN STATUS DO NOT EXIST.
-
         return status;
     }
 }

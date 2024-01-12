@@ -14,9 +14,9 @@ public class CategoryRepositoryBean implements CategoryRepository {
     private static final List<Category> categoryList = new ArrayList<>();
 
     static {
-        categoryList.add(new Category("Category 1", "Category 1 description", "559ffa0a-5bb7-4207-a14e-93090623dec8"));
-        categoryList.add(new Category("Category 2", "Category 2 description", "559ffa0a-5bb7-4207-a14e-93090623dec7"));
-        categoryList.add(new Category("Category 3", "Category 3 description", "559ffa0a-5bb7-4207-a14e-93090623dec9"));
+        categoryList.add(new Category("Category 1", "Category 1 description","559ffa0a-5bb7-4207-a14e-93090623dec8"));
+        categoryList.add(new Category("Category 2", "Category 2 description","559ffa0a-5bb7-4207-a14e-93090623dec7"));
+        categoryList.add(new Category("Category 3", "Category 3 description","559ffa0a-5bb7-4207-a14e-93090623dec9"));
     }
     @Override
     public Collection<Category> findAll() {

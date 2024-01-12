@@ -1,14 +1,17 @@
 package com.example.taskmanager.tasks;
 
+import com.example.taskmanager.category.Category;
+import com.example.taskmanager.status.Status;
+
 import java.sql.Timestamp;
 
 public class Task {
     private String taskId;
     private String name;
     private String description;
-    private String category;
+    private Category category;
     private Timestamp endedDate;
-    private String status;
+    private Status status;
     private String uuid;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
@@ -20,7 +23,7 @@ public class Task {
         this.uuid = uuid;
     }
 
-    public Task(String name, String description, String category, String status, String uuid) {
+    public Task(String name, String description, Category category, Status status, String uuid) {
         this.name = name;
         this.description = description;
         this.category = category;
@@ -52,11 +55,11 @@ public class Task {
         this.description = description;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -68,11 +71,11 @@ public class Task {
         this.endedDate = endedDate;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

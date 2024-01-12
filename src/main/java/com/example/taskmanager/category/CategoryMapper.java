@@ -9,6 +9,6 @@ public class CategoryMapper {
     }
 
     public Category toModel(CategoryDTO dto) {
-        return new Category(dto.getName(), dto.getDescription(),dto.getUuid());
+        return new Category(dto.getName(), dto.getDescription(), dto.getUuid());
     }
 }

@@ -1,10 +1,12 @@
 package com.example.taskmanager.status;
 
+
 import java.sql.Timestamp;
 
 public class Status {
-    private String statusId;
+    private String stateId;
     private String name;
+
     private String uuid;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
@@ -21,12 +23,12 @@ public class Status {
         this.uuid = uuid;
     }
 
-    public String getStatusId() {
-        return statusId;
+    public String getStateId() {
+        return stateId;
     }
 
-    public void setStatusId(String statusId) {
-        this.statusId = statusId;
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
     }
 
     public String getName() {
