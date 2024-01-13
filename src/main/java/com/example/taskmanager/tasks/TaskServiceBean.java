@@ -1,5 +1,7 @@
 package com.example.taskmanager.tasks;
 
+import com.example.taskmanager.category.Category;
+import com.example.taskmanager.status.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
@@ -42,8 +44,10 @@ public class TaskServiceBean implements TaskService {
         Task task = optionalTask.get();
         task.setDescription(taskDTO.getDescription());
         task.setName(taskDTO.getName());
-        task.setStatus(taskDTO.getStatus());
-        task.setCategory(taskDTO.getCategory());
+        Category category = new Category(taskDTO.getCategory().getName(),taskDTO.getCategory().getDescription(),taskDTO.getCategory().getUuid());
+        Status status = new Status(taskDTO.getStatus().getName(),taskDTO.getStatus().getUuid());
+        task.setStatus(status);
+        task.setCategory(category);
 
         taskRepository.save(task);
         return mapper.toDTO(task);

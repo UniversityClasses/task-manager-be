@@ -1,17 +1,12 @@
-package com.example.taskmanager.tasks;
+package com.example.taskmanager.status;
 
-import com.example.taskmanager.category.Category;
-import com.example.taskmanager.status.Status;
 
 import java.sql.Timestamp;
 
-public class Task {
-    private String taskId;
+public class Status {
+    private String stateId;
     private String name;
-    private String description;
-    private Category category;
-    private Timestamp endedDate;
-    private Status status;
+
     private String uuid;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
@@ -19,24 +14,21 @@ public class Task {
     private Integer modifiedBy;
     private boolean deleted;
 
-    public Task(String uuid) {
+    public Status(String uuid) {
         this.uuid = uuid;
     }
 
-    public Task(String name, String description, Category category, Status status, String uuid) {
+    public Status(String name, String uuid) {
         this.name = name;
-        this.description = description;
-        this.category = category;
-        this.status = status;
         this.uuid = uuid;
     }
 
-    public String getTaskId() {
-        return taskId;
+    public String getStateId() {
+        return stateId;
     }
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
     }
 
     public String getName() {
@@ -45,38 +37,6 @@ public class Task {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Timestamp getEndedDate() {
-        return endedDate;
-    }
-
-    public void setEndedDate(Timestamp endedDate) {
-        this.endedDate = endedDate;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public String getUuid() {
