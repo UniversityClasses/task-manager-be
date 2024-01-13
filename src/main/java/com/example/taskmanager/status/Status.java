@@ -1,15 +1,20 @@
 package com.example.taskmanager.status;
 
+import com.example.taskmanager.tasks.Task;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -36,6 +41,9 @@ public class Status {
 
     @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT '0'")
     private boolean deleted;
+
+    @OneToMany(mappedBy = "status", cascade = CascadeType.ALL)
+    private List<Task> tasks;
 
     public Status() {
     }

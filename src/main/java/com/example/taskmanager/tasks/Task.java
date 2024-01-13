@@ -1,7 +1,7 @@
 package com.example.taskmanager.tasks;
 
 import com.example.taskmanager.category.Category;
-import com.example.taskmanager.category.CategoryDTO;
+import com.example.taskmanager.status.Status;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -39,9 +40,6 @@ public class Task {
     private String name;
     @Column(nullable = true, length = 2000)
     private String description;
-
-    @Column(nullable = true, length = 100)
-    private String status;
     @Column(updatable = false, nullable = false, unique = true, length = 36)
     private UUID uuid;
     @Column(updatable = false, columnDefinition = "timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP")
@@ -64,11 +62,15 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "status_id", nullable = true)
+    private Status status;
+
     public Task(UUID uuid) {
         this.uuid = uuid;
     }
 
-    public Task(String name, String description, List<Category> categories, String status, UUID uuid) {
+    public Task(String name, String description, List<Category> categories, Status status, UUID uuid) {
         this.name = name;
         this.description = description;
         this.categories = categories;
@@ -112,11 +114,11 @@ public class Task {
         this.categories = categories;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
