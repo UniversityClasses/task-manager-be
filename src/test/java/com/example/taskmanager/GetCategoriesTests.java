@@ -34,7 +34,7 @@ public class GetCategoriesTests {
     public void testControllerEndpoint() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/categories"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))  // Check if the array has three elements
+                .andExpect(jsonPath("$", hasSize(3)))  // Check if the array has three elements
                 .andExpect(jsonPath("$[0].uuid", is("559ffa0a-5bb7-4207-a14e-93090623dec8")))  // Check the first element's id
                 .andExpect(jsonPath("$[0].name", is("Category 1")))  // Check the first element's name
                 .andExpect(jsonPath("$[1].uuid", is("559ffa0a-5bb7-4207-a14e-93090623dec7")))  // Check the second element's id

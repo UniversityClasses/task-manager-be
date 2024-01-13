@@ -14,7 +14,7 @@ import java.util.Optional;
 public class TaskRepositoryBean implements TaskRepository {
 
     private static final List<Task> taskList = new ArrayList<>();
-    private static final Category category1 = new Category("Category 1","Cate 1","559ffa0a-5bb7-4207-a14e-93090623dec7");
+    private static final Category category1 = new Category("Category 1","Category 1 Description","559ffa0a-5bb7-4207-a14e-93090623dec7");
     private static final Status status1 = new Status("To Do","559ffa0a-5bb7-4207-a14e-93090623des7");
     private static final Status status2 = new Status("To Do","559ffa0a-5bb7-4207-a14e-93090623des8");
     private static final Status status3 = new Status("To Do","559ffa0a-5bb7-4207-a14e-93090623des9");

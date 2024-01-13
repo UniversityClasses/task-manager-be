@@ -39,10 +39,10 @@ public class GetTasksTests {
         mockMvc.perform(MockMvcRequestBuilders.get("/tasks"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))  // Check if the array has three elements
-                .andExpect(jsonPath("$[0].uuid", is("559ffa0a-5bb7-4207-a14e-93090623dec8")))  // Check the first element's id
+                .andExpect(jsonPath("$[0].uuid", is("559ffa0a-5bb7-4207-a14e-93090623det8")))  // Check the first element's id
                 .andExpect(jsonPath("$[0].name", is("task 1")))  // Check the first element's name
-                .andExpect(jsonPath("$[1].uuid", is("559ffa0a-5bb7-4207-a14e-93090623dec7")))  // Check the second element's id
+                .andExpect(jsonPath("$[1].uuid", is("559ffa0a-5bb7-4207-a14e-93090623det7")))  // Check the second element's id
                 .andExpect(jsonPath("$[1].name", is("task 2")))
-                .andExpect(MockMvcResultMatchers.content().string("[{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623dec8\",\"name\":\"task 1\",\"description\":\"task 1 description\",\"category\":\"cat 1\",\"status\":\"status 1\"},{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623dec7\",\"name\":\"task 2\",\"description\":\"task 2 description\",\"category\":\"cat 1\",\"status\":\"status 2\"},{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623dec9\",\"name\":\"task 3\",\"description\":\"task 3 description\",\"category\":\"cat 1\",\"status\":\"status 3\"}]"));
+                .andExpect(MockMvcResultMatchers.content().string("[{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623det8\",\"name\":\"task 1\",\"description\":\"task 1 description\",\"category\":{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623dec7\",\"name\":\"Category 1\",\"description\":\"Cate 1\"},\"status\":{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623des7\",\"name\":\"To Do\"}},{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623det7\",\"name\":\"task 2\",\"description\":\"task 2 description\",\"category\":{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623dec7\",\"name\":\"Category 1\",\"description\":\"Cate 1\"},\"status\":{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623des8\",\"name\":\"To Do\"}},{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623det9\",\"name\":\"task 3\",\"description\":\"task 3 description\",\"category\":{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623dec7\",\"name\":\"Category 1\",\"description\":\"Cate 1\"},\"status\":{\"uuid\":\"559ffa0a-5bb7-4207-a14e-93090623des9\",\"name\":\"To Do\"}}]"));
     }
 }
