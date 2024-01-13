@@ -32,10 +32,10 @@ public class TaskServiceBean implements TaskService {
     public List<TaskDTO> getAll(List<String> categoryIdList, List<String> statusIdList) {
 
         List<Task> tasks =
-//                (!CollectionUtils.isEmpty(categoryIdList) && !CollectionUtils.isEmpty(statusIdList))
-//                ? taskRepository.findAllByCategoryInAndStatusIn(categoryIdList, statusIdList) :
-//                !CollectionUtils.isEmpty(categoryIdList) ? taskRepository.findAllByCategoryIn(categoryIdList) :
-//                !CollectionUtils.isEmpty(statusIdList) ? taskRepository.findAllByStatusIn(statusIdList) :
+                (!CollectionUtils.isEmpty(categoryIdList) && !CollectionUtils.isEmpty(statusIdList))
+                ? taskRepository.findAllByCategories_UuidInAndStatusIn(categoryIdList, statusIdList) :
+                !CollectionUtils.isEmpty(categoryIdList) ? taskRepository.findAllByCategories_UuidIn(categoryIdList) :
+                !CollectionUtils.isEmpty(statusIdList) ? taskRepository.findAllByStatusIn(statusIdList) :
                 taskRepository.findAll();
 
         return tasks
