@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Optional<Task> getCategoryByUuid(UUID uuid);
+
+    List<Category> findAllByUuidIn(List<UUID> uuids);
 }

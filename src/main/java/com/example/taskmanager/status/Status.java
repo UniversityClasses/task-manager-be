@@ -1,31 +1,22 @@
-package com.example.taskmanager.category;
+package com.example.taskmanager.status;
 
-import com.example.taskmanager.tasks.Task;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.PrePersist;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@SQLDelete(sql = "UPDATE Category SET deleted = true WHERE category_id=?")
-@Where(clause = "deleted = false")
-public class Category {
+public class Status {
     @Id
     @GeneratedValue
-    private Long categoryId;
+    private Long statusId;
     @Column(nullable = false, length = 200)
     private String name;
     @Column(nullable = true, length = 2000)
@@ -46,33 +37,25 @@ public class Category {
     @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT '0'")
     private boolean deleted;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Task> tasks = new HashSet<>();
-
-    public Category() {
+    public Status() {
     }
 
-    public Category(UUID uuid) {
+    public Status(UUID uuid) {
         this.uuid = uuid;
     }
 
-    public Category(UUID uuid, String name, String description) {
-        this.uuid = uuid;
+    public Status(UUID uuid, String name, String description) {
         this.name = name;
         this.description = description;
+        this.uuid = uuid;
     }
 
-    @PrePersist
-    public void initializeUuid() {
-        this.setUuid(UUID.randomUUID());
+    public Long getStatusId() {
+        return statusId;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
     }
 
     public String getName() {
@@ -137,13 +120,5 @@ public class Category {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-    }
-
-    public Set<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
     }
 }

@@ -13,7 +13,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Optional<Task> getTaskByUuid(UUID uuid);
 
-    List<Task> findAllByCategoryIn(List<String> category);
-    List<Task> findAllByStatusIn(List<String> status);
-    List<Task> findAllByCategoryInAndStatusIn(List<String> category, List<String> status);
+//    List<Task> findAllByCategoryIn(List<String> category);
+//    List<Task> findAllByStatusIn(List<String> status);
+//    List<Task> findAllByCategoryInAndStatusIn(List<String> category, List<String> status);
 }

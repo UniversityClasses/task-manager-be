@@ -1,10 +1,16 @@
 package com.example.taskmanager.tasks;
 
+import com.example.taskmanager.category.Category;
+import com.example.taskmanager.category.CategoryDTO;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -16,6 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -33,7 +40,6 @@ public class Task {
     @Column(nullable = true, length = 2000)
     private String description;
 
-    private String category;
     @Column(nullable = true, length = 100)
     private String status;
     @Column(updatable = false, nullable = false, unique = true, length = 36)
@@ -52,14 +58,20 @@ public class Task {
     @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT '0'")
     private boolean deleted;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.PERSIST})
+    @JoinTable(name = "task_category",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories;
+
     public Task(UUID uuid) {
         this.uuid = uuid;
     }
 
-    public Task(String name, String description, String category, String status, UUID uuid) {
+    public Task(String name, String description, List<Category> categories, String status, UUID uuid) {
         this.name = name;
         this.description = description;
-        this.category = category;
+        this.categories = categories;
         this.status = status;
         this.uuid = uuid;
     }
@@ -92,14 +104,13 @@ public class Task {
         this.description = description;
     }
 
-    public String getCategory() {
-        return category;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
-
 
     public String getStatus() {
         return status;

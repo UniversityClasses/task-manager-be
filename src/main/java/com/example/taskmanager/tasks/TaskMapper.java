@@ -2,25 +2,36 @@ package com.example.taskmanager.tasks;
 
 import com.example.taskmanager.category.Category;
 import com.example.taskmanager.category.CategoryDTO;
+import com.example.taskmanager.category.CategoryMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TaskMapper {
+
+    @Autowired
+    private CategoryMapper categoryMapper;
+
     public TaskDTO toDTO(Task task) {
-        String category = task.getCategory();
-//        CategoryDTO dto = null;
-//        if (category != null ) {
-//            dto =  new CategoryDTO(category.getUuid(), category.getName(), category.getDescription());
-//        }
-        return new TaskDTO(task.getUuid(), task.getName(), task.getDescription(), category, task.getStatus());
+        List<CategoryDTO> categories = Optional.ofNullable(task.getCategories())
+                .orElseGet(Arrays::asList)
+                .stream()
+                .map(c -> categoryMapper.toDTO(c))
+                .toList();
+
+        return new TaskDTO(task.getUuid(), task.getName(), task.getDescription(), categories, task.getStatus());
     }
 
     public Task toModel(TaskDTO dto) {
-//        CategoryDTO category = dto.getCategory();
-//        String categoryModel = null;
-//        if (category != null ) {
-//            categoryModel = new Category(category.getUuid());
-//        }
-        return new Task(dto.getName(), dto.getDescription(), dto.getCategory(), dto.getStatus(), dto.getUuid());
+        List<Category> categories = Optional.ofNullable(dto.getCategories())
+                .orElseGet(Arrays::asList)
+                .stream()
+                .map(c -> categoryMapper.toModel(c))
+                .toList();
+        return new Task(dto.getName(), dto.getDescription(), categories, dto.getStatus(), dto.getUuid());
     }
 }

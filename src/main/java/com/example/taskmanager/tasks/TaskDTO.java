@@ -1,21 +1,24 @@
 package com.example.taskmanager.tasks;
 
+import com.example.taskmanager.category.CategoryDTO;
+
+import java.util.List;
 import java.util.UUID;
 
 public class TaskDTO {
     private UUID uuid;
     private String name;
     private String description;
-    private String category;
+    private List<CategoryDTO> categories;
     private String status;
 
     public TaskDTO() {}
 
-    public TaskDTO(UUID uuid, String name, String description, String category, String status) {
+    public TaskDTO(UUID uuid, String name, String description, List<CategoryDTO> categories, String status) {
         this.uuid = uuid;
         this.name = name;
         this.description = description;
-        this.category = category;
+        this.categories = categories;
         this.status = status;
     }
 
@@ -43,12 +46,12 @@ public class TaskDTO {
         this.description = description;
     }
 
-    public String getCategory() {
-        return category;
+    public List<CategoryDTO> getCategories() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(List<CategoryDTO> categories) {
+        this.categories = categories;
     }
 
     public String getStatus() {
