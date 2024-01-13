@@ -1,34 +1,30 @@
 package com.example.taskmanager.tasks;
 
 import com.example.taskmanager.category.Category;
+import com.example.taskmanager.modelbase.ModelBase;
 import com.example.taskmanager.status.Status;
 
 import java.sql.Timestamp;
 
-public class Task {
+public class Task extends ModelBase {
     private String taskId;
     private String name;
     private String description;
     private Category category;
     private Timestamp endedDate;
     private Status status;
-    private String uuid;
-    private Timestamp createdDate;
-    private Timestamp modifiedDate;
-    private Integer createdBy;
-    private Integer modifiedBy;
-    private boolean deleted;
+
 
     public Task(String uuid) {
-        this.uuid = uuid;
+        super(uuid);
     }
 
-    public Task(String name, String description, Category category, Status status, String uuid) {
+    public Task(String name, String description, Category category, Status status,String uuid) {
+        super(uuid);
         this.name = name;
         this.description = description;
         this.category = category;
         this.status = status;
-        this.uuid = uuid;
     }
 
     public String getTaskId() {
@@ -77,53 +73,5 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Timestamp getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public Integer getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Integer createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Integer getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(Integer modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
     }
 }
