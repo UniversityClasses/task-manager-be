@@ -1,11 +1,15 @@
 package com.example.taskmanager.tasks;
 
+import com.example.taskmanager.category.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -17,9 +21,15 @@ public class TaskServiceBean implements TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<TaskDTO> getAll() {
-        return taskRepository
-                .findAll()
+    public List<TaskDTO> getAll(List<String> categoryIdList, List<String> statusIdList) {
+
+        List<Task> tasks = (!CollectionUtils.isEmpty(categoryIdList) && !CollectionUtils.isEmpty(statusIdList))
+                ? taskRepository.findAllByCategoryInAndStatusIn(categoryIdList, statusIdList) :
+                !CollectionUtils.isEmpty(categoryIdList) ? taskRepository.findAllByCategoryIn(categoryIdList) :
+                !CollectionUtils.isEmpty(statusIdList) ? taskRepository.findAllByStatusIn(statusIdList) :
+                taskRepository.findAll();
+
+        return tasks
                 .stream()
                 .map(task -> mapper.toDTO(task))
                 .collect(Collectors.toList());
@@ -34,8 +44,7 @@ public class TaskServiceBean implements TaskService {
 
     @Override
     public TaskDTO edit(TaskDTO taskDTO) {
-        Task example1 = new Task(taskDTO.getUuid());
-        Optional<Task> optionalTask = taskRepository.findOne(Example.of(example1));
+        Optional<Task> optionalTask = taskRepository.getTaskByUuid(taskDTO.getUuid());
 
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
@@ -50,19 +59,21 @@ public class TaskServiceBean implements TaskService {
     }
 
     @Override
-    public TaskDTO getOne(String uuid) {
-        Task task = getTask(uuid);
+    public TaskDTO getOne(UUID uuid) {
+        Task task = new Task(uuid);
+        Optional<Task> task1 = taskRepository.findOne(Example.of(task));
+
+//        Optional<Task> task = taskRepository.getTaskByUuid(uuid);
         
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
 
-        return mapper.toDTO(task);
+        return mapper.toDTO(task1.get());
     }
 
     @Override
-    public TaskDTO delete(String uuid) {
-        Task example1 = new Task(uuid);
-        Optional<Task> optionalTask = taskRepository.findOne(Example.of(example1));
+    public TaskDTO delete(UUID uuid) {
+        Optional<Task> optionalTask = taskRepository.getTaskByUuid(uuid);
 
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
@@ -70,13 +81,5 @@ public class TaskServiceBean implements TaskService {
         taskRepository.delete(task);
 
         return mapper.toDTO(task);
-    }
-
-
-    private Task getTask(String uuid) {
-        Task task = taskRepository.findOneByUuid(uuid);
-        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
-
-        return task;
     }
 }

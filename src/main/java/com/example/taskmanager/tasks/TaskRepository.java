@@ -1,18 +1,19 @@
 package com.example.taskmanager.tasks;
 
 import org.springframework.data.domain.Example;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface TaskRepository {
-    Collection<Task> findAll();
+public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    Task save(Task task);
+    Optional<Task> getTaskByUuid(UUID uuid);
 
-    Optional<Task> findOne(Example<Task> of);
-
-    void delete(Task task);
-
-    Task findOneByUuid(String uuid);
+    List<Task> findAllByCategoryIn(List<String> category);
+    List<Task> findAllByStatusIn(List<String> status);
+    List<Task> findAllByCategoryInAndStatusIn(List<String> category, List<String> status);
 }
