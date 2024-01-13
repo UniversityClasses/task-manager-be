@@ -1,5 +1,7 @@
 package com.example.taskmanager;
 
+import com.example.taskmanager.category.Category;
+import com.example.taskmanager.status.Status;
 import com.example.taskmanager.tasks.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class GetTasksTests {
     private static final List<Task> taskList = new ArrayList<>();
 
+
+
     static {
-        taskList.add(new Task("task 1", "task 1 description", "cat 1", "status 1", UUID.randomUUID().toString()));
-        taskList.add(new Task("task 2", "task 2 description", "cat 1", "status 2", UUID.randomUUID().toString()));
-        taskList.add(new Task("task 3", "task 3 description", "cat 1", "status 3", UUID.randomUUID().toString()));
+        taskList.add(new Task("task 1", "task 1 description", new Category("Category 1","Category 1 Description","1"), new Status("To Do","1"), UUID.randomUUID().toString()));
+        taskList.add(new Task("task 2", "task 2 description", new Category("Category 2","Category 2 Description","2"), new Status("To Do","2"), UUID.randomUUID().toString()));
+        taskList.add(new Task("task 3", "task 3 description", new Category("Category 3","Category 2 Description","3"), new Status("To Do","3"), UUID.randomUUID().toString()));
     }
     @Autowired
     private MockMvc mockMvc;

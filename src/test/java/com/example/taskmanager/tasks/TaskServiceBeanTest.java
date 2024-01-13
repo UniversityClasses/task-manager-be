@@ -1,5 +1,9 @@
 package com.example.taskmanager.tasks;
 
+import com.example.taskmanager.category.Category;
+import com.example.taskmanager.category.CategoryDTO;
+import com.example.taskmanager.status.Status;
+import com.example.taskmanager.status.StatusDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,7 +35,10 @@ public class TaskServiceBeanTest {
     @Test
     public void testGetAll() {
         // Arrange
-        when(taskRepository.findAll()).thenReturn(Collections.singletonList(new Task("uuid", "TaskName", "TaskDescription", "Category", "Status")));
+        //when(taskRepository.findAll()).thenReturn(Collections.singletonList(new Task("uuid", "TaskName", "TaskDescription", "Category", "Status")));
+        Category category1 = new Category("Category 1","Category 1 description","1");
+        Status status1 = new Status("To Do","1");
+        when(taskRepository.findAll()).thenReturn(Collections.singletonList(new Task("uuid", "TaskName", category1, status1, "Status")));
 
         // Act
         taskService.getAll();
@@ -44,8 +51,12 @@ public class TaskServiceBeanTest {
     @Test
     public void testCreate() {
         // Arrange
-        TaskDTO taskDTO = new TaskDTO("uuid", "TaskName", "TaskDescription", "Category", "Status");
-        Task task = new Task("uuid", "TaskName", "TaskDescription", "Category", "Status");
+        CategoryDTO categoryDTO = new CategoryDTO("1","Category 1","Category 1 Description");
+        StatusDTO statusDTO = new StatusDTO("1","To Do");
+        TaskDTO taskDTO = new TaskDTO("uuid", "TaskName", "TaskDescription", categoryDTO, statusDTO);
+        Category category = new Category("Category 1","Category 1 Description","1");
+        Status status = new Status("To Do","1");
+        Task task = new Task("uuid", "TaskName", category, status, "Status");
 
         when(taskMapper.toModel(taskDTO)).thenReturn(task);
         when(taskRepository.save(task)).thenReturn(task);
@@ -63,8 +74,12 @@ public class TaskServiceBeanTest {
     @Test
     public void testEdit() {
         // Arrange
-        TaskDTO taskDTO = new TaskDTO("uuid", "UpdatedTaskName", "UpdatedTaskDescription", "UpdatedCategory", "UpdatedStatus");
-        Task existingTask = new Task("uuid", "TaskName", "TaskDescription", "Category", "Status");
+        CategoryDTO categoryDTO = new CategoryDTO("1","Category 1","Category 1 Description");
+        StatusDTO statusDTO = new StatusDTO("1","To Do");
+        TaskDTO taskDTO = new TaskDTO("uuid", "UpdatedTaskName", "UpdatedTaskDescription", categoryDTO, statusDTO);
+        Category category = new Category("Category 1","Category 1 Description","1");
+        Status status = new Status("To Do","1");
+        Task existingTask = new Task("uuid", "TaskName", category, status, "Status");
 
         when(taskRepository.findOne(any())).thenReturn(Optional.of(existingTask));
         when(taskRepository.save(existingTask)).thenReturn(existingTask);
@@ -82,7 +97,7 @@ public class TaskServiceBeanTest {
     @Test
     public void testEditTaskNotFound() {
         // Arrange
-        TaskDTO taskDTO = new TaskDTO("uuid", "UpdatedTaskName", "UpdatedTaskDescription", "UpdatedCategory", "UpdatedStatus");
+        TaskDTO taskDTO = new TaskDTO("uuid", "UpdatedTaskName", "UpdatedTaskDescription", null, null);
 
         when(taskRepository.findOne(any())).thenReturn(Optional.empty());
 
