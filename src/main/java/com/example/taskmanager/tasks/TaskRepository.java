@@ -12,8 +12,7 @@ import java.util.UUID;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Optional<Task> getTaskByUuid(UUID uuid);
-
-    List<Task> findAllByCategoryIn(List<String> category);
+    List<Task> findAllByCategories_UuidIn(List<String> uuids);
     List<Task> findAllByStatusIn(List<String> status);
-    List<Task> findAllByCategoryInAndStatusIn(List<String> category, List<String> status);
+    List<Task> findAllByCategories_UuidInAndStatusIn(List<String> uuids, List<String> status);
 }
