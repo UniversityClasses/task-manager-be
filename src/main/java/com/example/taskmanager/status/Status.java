@@ -6,8 +6,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@SQLDelete(sql = "UPDATE Status SET deleted = true WHERE status_id=?")
+@Where(clause = "deleted = false")
 public class Status {
     @Id
     @GeneratedValue
@@ -42,7 +45,7 @@ public class Status {
     @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT '0'")
     private boolean deleted;
 
-    @OneToMany(mappedBy = "status", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "status", cascade = CascadeType.PERSIST)
     private List<Task> tasks;
 
     public Status() {

@@ -2,7 +2,6 @@ package com.example.taskmanager.tasks;
 
 import com.example.taskmanager.category.Category;
 import com.example.taskmanager.category.CategoryDTO;
-import com.example.taskmanager.category.CategoryMapper;
 import com.example.taskmanager.category.CategoryRepository;
 import com.example.taskmanager.status.Status;
 import com.example.taskmanager.status.StatusRepository;
@@ -50,7 +49,25 @@ public class TaskServiceBean implements TaskService {
 
     @Override
     public TaskDTO create(TaskDTO dto) {
+        List<Category> categories = Collections.emptyList();
+        Status status = null;
+        if (!CollectionUtils.isEmpty(dto.getCategories())) {
+            categories = categoryRepository.findAllByUuidIn(dto.getCategories().stream().map(CategoryDTO::getUuid).toList());
+            // TODO: ADD EXCEPTION WHEN CATEGORY DO NOT EXIST.
+        }
+
+        if (dto.getStatus() != null && dto.getStatus().getUuid() != null) {
+
+            Optional<Status> statusByUuid = statusRepository.getStatusByUuid(dto.getStatus().getUuid());
+            // TODO: ADD EXCEPTION WHEN STATUS DO NOT EXIST.
+            if (statusByUuid.isPresent()) {
+                status = statusByUuid.get();
+            }
+        }
+
         Task task = mapper.toModel(dto);
+        task.setCategories(categories);
+        task.setStatus(status);
         Task savedTask = taskRepository.save(task);
         return mapper.toDTO(savedTask);
     }
