@@ -3,6 +3,8 @@ package com.example.taskmanager.tasks;
 import com.example.taskmanager.category.Category;
 import com.example.taskmanager.category.CategoryDTO;
 import com.example.taskmanager.category.CategoryRepository;
+import com.example.taskmanager.status.Status;
+import com.example.taskmanager.status.StatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Example;
@@ -21,19 +23,23 @@ public class TaskServiceBean implements TaskService {
     @Autowired
     private TaskMapper mapper;
 
+
     @Autowired
     private TaskRepository taskRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private StatusRepository statusRepository;
 
     public List<TaskDTO> getAll(List<String> categoryIdList, List<String> statusIdList) {
 
-        List<Task> tasks = (!CollectionUtils.isEmpty(categoryIdList) && !CollectionUtils.isEmpty(statusIdList))
-                ? taskRepository.findAllByCategories_UuidInAndStatusIn(categoryIdList, statusIdList) :
+        List<Task> tasks =
+                (!CollectionUtils.isEmpty(categoryIdList) && !CollectionUtils.isEmpty(statusIdList))
+                ? taskRepository.findAllByCategories_UuidInAndStatus_UuidIn(categoryIdList, statusIdList) :
                 !CollectionUtils.isEmpty(categoryIdList) ? taskRepository.findAllByCategories_UuidIn(categoryIdList) :
-                        !CollectionUtils.isEmpty(statusIdList) ? taskRepository.findAllByStatusIn(statusIdList) :
-                                taskRepository.findAll();
+                !CollectionUtils.isEmpty(statusIdList) ? taskRepository.findAllByStatus_UuidIn(statusIdList) :
+                taskRepository.findAll();
 
         return tasks
                 .stream()
@@ -43,13 +49,25 @@ public class TaskServiceBean implements TaskService {
 
     @Override
     public TaskDTO create(TaskDTO dto) {
-        Task task = mapper.toModel(dto);
         List<Category> categories = Collections.emptyList();
+        Status status = null;
         if (!CollectionUtils.isEmpty(dto.getCategories())) {
             categories = categoryRepository.findAllByUuidIn(dto.getCategories().stream().map(CategoryDTO::getUuid).toList());
             // TODO: ADD EXCEPTION WHEN CATEGORY DO NOT EXIST.
         }
+
+        if (dto.getStatus() != null && dto.getStatus().getUuid() != null) {
+
+            Optional<Status> statusByUuid = statusRepository.getStatusByUuid(dto.getStatus().getUuid());
+            // TODO: ADD EXCEPTION WHEN STATUS DO NOT EXIST.
+            if (statusByUuid.isPresent()) {
+                status = statusByUuid.get();
+            }
+        }
+
+        Task task = mapper.toModel(dto);
         task.setCategories(categories);
+        task.setStatus(status);
         Task savedTask = taskRepository.save(task);
         return mapper.toDTO(savedTask);
     }
@@ -58,16 +76,27 @@ public class TaskServiceBean implements TaskService {
     public TaskDTO edit(TaskDTO taskDTO) {
         Optional<Task> optionalTask = taskRepository.getTaskByUuid(taskDTO.getUuid());
         List<Category> categories = Collections.emptyList();
+        Status status = null;
         if (!CollectionUtils.isEmpty(taskDTO.getCategories())) {
             categories = categoryRepository.findAllByUuidIn(taskDTO.getCategories().stream().map(CategoryDTO::getUuid).toList());
             // TODO: ADD EXCEPTION WHEN CATEGORY DO NOT EXIST.
         }
+
+        if (taskDTO.getStatus() != null && taskDTO.getStatus().getUuid() != null) {
+
+            Optional<Status> statusByUuid = statusRepository.getStatusByUuid(taskDTO.getStatus().getUuid());
+            // TODO: ADD EXCEPTION WHEN STATUS DO NOT EXIST.
+            if (statusByUuid.isPresent()) {
+                status = statusByUuid.get();
+            }
+        }
+
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
         Task task = optionalTask.get();
         task.setDescription(taskDTO.getDescription());
         task.setName(taskDTO.getName());
-        task.setStatus(taskDTO.getStatus());
+        task.setStatus(status);
         task.setCategories(categories);
 
         taskRepository.save(task);
@@ -80,7 +109,7 @@ public class TaskServiceBean implements TaskService {
         Optional<Task> task1 = taskRepository.findOne(Example.of(task));
 
 //        Optional<Task> task = taskRepository.getTaskByUuid(uuid);
-
+        
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
 
@@ -94,7 +123,6 @@ public class TaskServiceBean implements TaskService {
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
         Task task = optionalTask.get();
-        task.setCategories(null);
         taskRepository.delete(task);
 
         return mapper.toDTO(task);

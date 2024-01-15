@@ -3,6 +3,7 @@ package com.example.taskmanager.tasks;
 import com.example.taskmanager.category.Category;
 import com.example.taskmanager.category.CategoryDTO;
 import com.example.taskmanager.category.CategoryMapper;
+import com.example.taskmanager.status.StatusMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +13,12 @@ import java.util.Optional;
 
 @Component
 public class TaskMapper {
+
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private StatusMapper statusMapper;
 
     public TaskDTO toDTO(Task task) {
         List<CategoryDTO> categories = Optional.ofNullable(task.getCategories())
@@ -21,7 +26,8 @@ public class TaskMapper {
                 .stream()
                 .map(c -> categoryMapper.toDTO(c))
                 .toList();
-        return new TaskDTO(task.getUuid(), task.getName(), task.getDescription(), categories, task.getStatus());
+
+        return new TaskDTO(task.getUuid(), task.getName(), task.getDescription(), categories, statusMapper.toDTO(task.getStatus()));
     }
 
     public Task toModel(TaskDTO dto) {
@@ -30,6 +36,6 @@ public class TaskMapper {
                 .stream()
                 .map(c -> categoryMapper.toModel(c))
                 .toList();
-        return new Task(dto.getName(), dto.getDescription(), categories, dto.getStatus(), dto.getUuid());
+        return new Task(dto.getName(), dto.getDescription(), categories, statusMapper.toModel(dto.getStatus()), dto.getUuid());
     }
 }

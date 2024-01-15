@@ -19,6 +19,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+
+//@NamedStoredProcedureQuery(
+//        name = "get_category_by_id",
+//        procedureName = "get_category_by_id",
+//        resultClasses = Category.class,
+//        parameters = {
+//                @StoredProcedureParameter(mode = ParameterMode.IN, name = "categoryId", type = Long.class)
+//        }
+//)
 @Entity
 @SQLDelete(sql = "UPDATE Category SET deleted = true WHERE category_id=?")
 @Where(clause = "deleted = false")

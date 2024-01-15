@@ -1,41 +1,30 @@
-package com.example.taskmanager.tasks;
+package com.example.taskmanager.status;
 
-import com.example.taskmanager.category.Category;
-import com.example.taskmanager.status.Status;
+import com.example.taskmanager.tasks.Task;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.OneToMany;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-@EnableJpaAuditing
-@SQLDelete(sql = "UPDATE Task SET deleted = true WHERE task_id=?")
+@SQLDelete(sql = "UPDATE Status SET deleted = true WHERE status_id=?")
 @Where(clause = "deleted = false")
-public class Task {
-
+public class Status {
     @Id
     @GeneratedValue
-    private Long taskId;
+    private Long statusId;
     @Column(nullable = false, length = 200)
     private String name;
     @Column(nullable = true, length = 2000)
@@ -56,38 +45,28 @@ public class Task {
     @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT '0'")
     private boolean deleted;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.PERSIST})
-    @JoinTable(name = "task_category",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<Category> categories;
+    @OneToMany(mappedBy = "status", cascade = CascadeType.PERSIST)
+    private List<Task> tasks;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "status_id", nullable = true)
-    private Status status;
+    public Status() {
+    }
 
-    public Task(UUID uuid) {
+    public Status(UUID uuid) {
         this.uuid = uuid;
     }
 
-    public Task(String name, String description, List<Category> categories, Status status, UUID uuid) {
+    public Status(UUID uuid, String name, String description) {
         this.name = name;
         this.description = description;
-        this.categories = categories;
-        this.status = status;
         this.uuid = uuid;
     }
 
-    public Task() {
-
+    public Long getStatusId() {
+        return statusId;
     }
 
-    public Long getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
     }
 
     public String getName() {
@@ -104,22 +83,6 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public UUID getUuid() {
@@ -168,10 +131,5 @@ public class Task {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-    }
-
-    @PrePersist
-    public void initializeUuid() {
-        this.setUuid(UUID.randomUUID());
     }
 }

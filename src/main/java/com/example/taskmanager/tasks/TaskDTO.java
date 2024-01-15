@@ -1,6 +1,7 @@
 package com.example.taskmanager.tasks;
 
 import com.example.taskmanager.category.CategoryDTO;
+import com.example.taskmanager.status.StatusDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,11 +11,11 @@ public class TaskDTO {
     private String name;
     private String description;
     private List<CategoryDTO> categories;
-    private String status;
+    private StatusDTO status;
 
     public TaskDTO() {}
 
-    public TaskDTO(UUID uuid, String name, String description, List<CategoryDTO> categories, String status) {
+    public TaskDTO(UUID uuid, String name, String description, List<CategoryDTO> categories, StatusDTO status) {
         this.uuid = uuid;
         this.name = name;
         this.description = description;
@@ -54,11 +55,11 @@ public class TaskDTO {
         this.categories = categories;
     }
 
-    public String getStatus() {
+    public StatusDTO getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusDTO status) {
         this.status = status;
     }
 }
