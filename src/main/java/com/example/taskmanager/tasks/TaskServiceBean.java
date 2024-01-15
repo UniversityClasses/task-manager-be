@@ -3,7 +3,6 @@ package com.example.taskmanager.tasks;
 import com.example.taskmanager.category.Category;
 import com.example.taskmanager.category.CategoryDTO;
 import com.example.taskmanager.category.CategoryRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Example;
@@ -33,8 +32,8 @@ public class TaskServiceBean implements TaskService {
         List<Task> tasks = (!CollectionUtils.isEmpty(categoryIdList) && !CollectionUtils.isEmpty(statusIdList))
                 ? taskRepository.findAllByCategories_UuidInAndStatusIn(categoryIdList, statusIdList) :
                 !CollectionUtils.isEmpty(categoryIdList) ? taskRepository.findAllByCategories_UuidIn(categoryIdList) :
-                !CollectionUtils.isEmpty(statusIdList) ? taskRepository.findAllByStatusIn(statusIdList) :
-                taskRepository.findAll();
+                        !CollectionUtils.isEmpty(statusIdList) ? taskRepository.findAllByStatusIn(statusIdList) :
+                                taskRepository.findAll();
 
         return tasks
                 .stream()
@@ -81,7 +80,7 @@ public class TaskServiceBean implements TaskService {
         Optional<Task> task1 = taskRepository.findOne(Example.of(task));
 
 //        Optional<Task> task = taskRepository.getTaskByUuid(uuid);
-        
+
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
 
