@@ -1,20 +1,24 @@
 package com.example.taskmanager.categories;
 
 import lombok.Data;
-
-import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 public class CategoryDTO {
-    private String uuid;
+    private UUID uuid;
     private String name;
     private String description;
-    private boolean deleted;
-    public CategoryDTO(String uuid, String name, String description,boolean deleted) {
+
+    public CategoryDTO(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public CategoryDTO() {
+    }
+
+    public CategoryDTO(UUID uuid, String name, String description) {
         this.uuid = uuid;
         this.name = name;
         this.description = description;
-        this.deleted = deleted;
     }
-    public CategoryDTO(){}
 }

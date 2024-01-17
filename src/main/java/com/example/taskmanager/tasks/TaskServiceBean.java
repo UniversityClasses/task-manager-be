@@ -1,28 +1,45 @@
 package com.example.taskmanager.tasks;
 
 import com.example.taskmanager.categories.Category;
+import com.example.taskmanager.categories.CategoryRepository;
+import com.example.taskmanager.categories.CategoryDTO;
 import com.example.taskmanager.exceptions.TaskNotFoundException;
 import com.example.taskmanager.status.State;
+import com.example.taskmanager.status.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
 public class TaskServiceBean implements TaskService {
-
     @Autowired
     private TaskMapper mapper;
 
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<TaskDTO> getAll() {
-        return taskRepository
-                .findAll()
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private StateRepository statusRepository;
+
+    public List<TaskDTO> getAll(List<String> categoryIdList, List<String> statusIdList) {
+
+        List<Task> tasks =
+                (!CollectionUtils.isEmpty(categoryIdList) && !CollectionUtils.isEmpty(statusIdList))
+                        ? taskRepository.findAllByCategories_UuidInAndStatus_UuidIn(categoryIdList, statusIdList) :
+                        !CollectionUtils.isEmpty(categoryIdList) ? taskRepository.findAllByCategories_UuidIn(categoryIdList) :
+                                !CollectionUtils.isEmpty(statusIdList) ? taskRepository.findAllByStatus_UuidIn(statusIdList) :
+                                        taskRepository.findAll();
+
+        return tasks
                 .stream()
                 .map(task -> mapper.toDTO(task))
                 .collect(Collectors.toList());
@@ -30,62 +47,82 @@ public class TaskServiceBean implements TaskService {
 
     @Override
     public TaskDTO create(TaskDTO dto) {
+        List<Category> categories = Collections.emptyList();
+        State status = null;
+        if (!CollectionUtils.isEmpty(dto.getCategories())) {
+            categories = categoryRepository.findAllByUuidIn(dto.getCategories().stream().map(CategoryDTO::getUuid).toList());
+            // TODO: ADD EXCEPTION WHEN CATEGORY DO NOT EXIST.
+        }
+
+        if (dto.getStatus() != null && dto.getStatus().getUuid() != null) {
+
+            Optional<State> statusByUuid = statusRepository.getStatusByUuid(dto.getStatus().getUuid());
+            // TODO: ADD EXCEPTION WHEN STATUS DO NOT EXIST.
+            if (statusByUuid.isPresent()) {
+                status = statusByUuid.get();
+            }
+        }
+
         Task task = mapper.toModel(dto);
+        task.setCategories(categories);
+        task.setStatus(status);
         Task savedTask = taskRepository.save(task);
         return mapper.toDTO(savedTask);
     }
 
     @Override
     public TaskDTO edit(TaskDTO taskDTO) {
-        Task example1 = new Task(taskDTO.getUuid());
-        Optional<Task> optionalTask = taskRepository.findOne(Example.of(example1));
-
-        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
-        Task task = optionalTask.orElseThrow(() -> new TaskNotFoundException("task Not Found with UUID: " + taskDTO.getUuid()));
-
-        //Task task = optionalTask.get();
-        task.setDescription(taskDTO.getDescription());
-        task.setName(taskDTO.getName());
-        task.setState(new State(taskDTO.getState()));
-        task.setCategory(new Category(taskDTO.getCategory()));
-        task.setDeleted(taskDTO.isDeleted());
-        //taskRepository.save(task);
-        return mapper.toDTO(task);
-    }
-
-    @Override
-    public TaskDTO getOne(String uuid) {
-        Task task = getTask(uuid);
-        
-        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
-        if (task == null){
-            throw new TaskNotFoundException("task Not Found with UUID: " + uuid);
+        Optional<Task> optionalTask = taskRepository.getTaskByUuid(taskDTO.getUuid());
+        List<Category> categories = Collections.emptyList();
+        State status = null;
+        if (!CollectionUtils.isEmpty(taskDTO.getCategories())) {
+            categories = categoryRepository.findAllByUuidIn(taskDTO.getCategories().stream().map(CategoryDTO::getUuid).toList());
+            // TODO: ADD EXCEPTION WHEN CATEGORY DO NOT EXIST.
         }
 
+        if (taskDTO.getStatus() != null && taskDTO.getStatus().getUuid() != null) {
+
+            Optional<State> statusByUuid = statusRepository.getStatusByUuid(taskDTO.getStatus().getUuid());
+            // TODO: ADD EXCEPTION WHEN STATUS DO NOT EXIST.
+            if (statusByUuid.isPresent()) {
+                status = statusByUuid.get();
+            }
+        }
+
+        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
+
+        Task task = optionalTask.get();
+        task.setDescription(taskDTO.getDescription());
+        task.setName(taskDTO.getName());
+        task.setStatus(status);
+        task.setCategories(categories);
+
+        taskRepository.save(task);
         return mapper.toDTO(task);
     }
 
     @Override
-    public TaskDTO delete(String uuid) {
-        Task example1 = new Task(uuid);
-        Optional<Task> optionalTask = taskRepository.findOne(Example.of(example1));
+    public TaskDTO getOne(UUID uuid) {
+        Task task = new Task(uuid);
+        Optional<Task> task1 = taskRepository.findOne(Example.of(task));
+
+//        Optional<Task> task = taskRepository.getTaskByUuid(uuid);
 
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
-        Task task = optionalTask.orElseThrow(() -> new TaskNotFoundException("task Not Found with UUID: " + uuid));
 
-        //Task task = optionalTask.get();
+
+        return mapper.toDTO(task1.get());
+    }
+
+    @Override
+    public TaskDTO delete(UUID uuid) {
+        Optional<Task> optionalTask = taskRepository.getTaskByUuid(uuid);
+
+        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
+
+        Task task = optionalTask.get();
         taskRepository.delete(task);
 
         return mapper.toDTO(task);
-    }
-
-
-    private Task getTask(String uuid) {
-        Task task = taskRepository.findOneByUuid(uuid);
-        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
-        if (task == null){
-            throw new TaskNotFoundException("task Not Found with UUID: " + uuid);
-        }
-        return task;
     }
 }

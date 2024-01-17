@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/tasks")
@@ -24,8 +25,10 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping
-    public List<TaskDTO> getAll(@RequestParam(value = "categoryId", required = false) List<String> categoryIdList) {
-        return taskService.getAll();
+    public List<TaskDTO> getAll(
+            @RequestParam(value = "categoryId", required = false) List<String> categoryIdList,
+            @RequestParam(value = "statusId", required = false) List<String> statusIdList) {
+        return taskService.getAll(categoryIdList, statusIdList);
     }
 
     @PostMapping
@@ -36,11 +39,11 @@ public class TaskController {
     @GetMapping("/{uuid}")
     public ResponseEntity<TaskDTO> getOne(@PathVariable String uuid) {
         try {
-            TaskDTO task = taskService.getOne(uuid);
+            TaskDTO task = taskService.getOne(UUID.fromString(uuid));
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(task);
-        } catch(TaskNotFoundException exception) {
+        } catch(Exception exception) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);
@@ -55,6 +58,6 @@ public class TaskController {
 
     @DeleteMapping("/{uuid}")
     public TaskDTO delete(@PathVariable String uuid) {
-        return taskService.delete(uuid);
+        return taskService.delete(UUID.fromString(uuid));
     }
 }

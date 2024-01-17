@@ -5,6 +5,7 @@ import com.example.taskmanager.exceptions.StateNotFoundExeption;
 import com.example.taskmanager.status.State;
 import com.example.taskmanager.status.StateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryDTO getOne(String uuid) {
-        Category categorySearched = categoryRepository.getByUUID(uuid);
+        Category categorySearched = null;//categoryRepository.findOne(Example.of());
         if (categorySearched != null)
             return mapper.toDTO(categorySearched);
         else return null;
@@ -44,9 +45,9 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryDTO edit(CategoryDTO dto) {
-        Category categorySearched = categoryRepository.getByUUID(dto.getUuid());
+        Category categorySearched = null;//categoryRepository.getByUUID(dto.getUuid());
         if (categorySearched != null){
-            Category updateCategory = categoryRepository.edit(categorySearched,dto);
+            Category updateCategory = null; //categoryRepository.edit(categorySearched,dto);
             return mapper.toDTO(updateCategory);
         }
         else return null;
@@ -54,9 +55,9 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryDTO delete(String uuid) {
-        Optional<Category> optionalCategory = Optional.ofNullable(categoryRepository.getByUUID(uuid));
+        Optional<Category> optionalCategory = null;//Optional.ofNullable(categoryRepository.getByUUID(uuid));
         Category stateSearched = optionalCategory.orElseThrow(() -> new CategoryNotFoundExeption("State Not Found with UUID: " + uuid));
-        Category categoryDeleted = categoryRepository.delete(stateSearched);
+        Category categoryDeleted = null;//categoryRepository.delete(stateSearched);
         return mapper.toDTO(categoryDeleted);
     }
 }

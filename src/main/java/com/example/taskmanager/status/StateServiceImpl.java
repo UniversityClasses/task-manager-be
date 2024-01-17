@@ -33,7 +33,7 @@ public class StateServiceImpl implements StateService{
 
     @Override
     public StateDTO getOne(String uuid) {
-        State stateSearched = stateRepository.getByUUID(uuid);
+        State stateSearched = null;//stateRepository.getByUUID(uuid);
         if (stateSearched != null)
             return stateMapper.toDTO(stateSearched);
         else return null;
@@ -41,9 +41,9 @@ public class StateServiceImpl implements StateService{
 
     @Override
     public StateDTO edit(StateDTO dto) {
-        State stateSearched = stateRepository.getByUUID(dto.getUuid());
+        State stateSearched = null;//stateRepository.getByUUID(dto.getUuid());
         if (stateSearched != null){
-            State updateState = stateRepository.edit(stateSearched,dto);
+            State updateState = null;//stateRepository.edit(stateSearched,dto);
             return stateMapper.toDTO(updateState);
         }
         else return null;
@@ -51,9 +51,9 @@ public class StateServiceImpl implements StateService{
 
     @Override
     public StateDTO delete(String uuid) {
-        Optional<State> optionalState = Optional.ofNullable(stateRepository.getByUUID(uuid));
+        Optional<State> optionalState = null;//Optional.ofNullable(stateRepository.getByUUID(uuid));
         State stateSearched = optionalState.orElseThrow(() -> new StateNotFoundExeption("State Not Found with UUID: " + uuid));
-        State deletedState = stateRepository.delete(stateSearched);
+        State deletedState = null;//stateRepository.delete(stateSearched);
         return stateMapper.toDTO(deletedState);
     }
 }

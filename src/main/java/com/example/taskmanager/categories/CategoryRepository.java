@@ -1,18 +1,19 @@
 package com.example.taskmanager.categories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 @Component
-public interface CategoryRepository {
-    Collection<Category> findAll();
+public interface CategoryRepository extends JpaRepository<Category,Long> {
 
-    Category save(Category category);
+//    Optional<Task> getCategoryByUuid(UUID uuid);
 
-    Category getByUUID(String uuid);
+    List<Category> findAllByUuidIn(List<UUID> uuids);
 
-    Category edit(Category categorySearched, CategoryDTO dto);
-
-    Category delete(Category categorySearched);
+//    @Procedure(name = "get_category_by_id")
+//    Category getCategoryById(@Param("categoryId") Long categoryId);
 }

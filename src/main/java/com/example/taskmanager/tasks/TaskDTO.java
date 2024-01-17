@@ -1,26 +1,29 @@
 package com.example.taskmanager.tasks;
 
 import com.example.taskmanager.categories.Category;
+import com.example.taskmanager.categories.CategoryDTO;
 import com.example.taskmanager.status.State;
+import com.example.taskmanager.status.StateDTO;
 import lombok.Data;
+
+import java.util.List;
+import java.util.UUID;
 
 @Data
 public class TaskDTO {
-    private String uuid;
+    private UUID uuid;
     private String name;
     private String description;
-    private String category;
-    private String state;
-    private boolean deleted;
+    private List<CategoryDTO> categories;
+    private StateDTO status;
 
     public TaskDTO() {}
 
-    public TaskDTO(String uuid, String name, String description, String category, String state,boolean deleted) {
+    public TaskDTO(UUID uuid, String name, String description, List<CategoryDTO> categories, StateDTO status) {
         this.uuid = uuid;
         this.name = name;
         this.description = description;
-        this.category = category;
-        this.state = state;
-        this.deleted = deleted;
+        this.categories = categories;
+        this.status = status;
     }
 }
