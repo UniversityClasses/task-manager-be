@@ -1,9 +1,11 @@
 package com.example.taskmanager.tasks;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +34,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public TaskDTO create(@RequestBody TaskDTO dto) {
+    public TaskDTO create(@Validated(TaskDTO.CreateValidationGroup.class) @RequestBody TaskDTO dto) {
         return taskService.create(dto);
     }
 
@@ -52,7 +54,7 @@ public class TaskController {
     }
 
     @PutMapping
-    public TaskDTO edit(@RequestBody TaskDTO dto) {
+    public TaskDTO edit(@Validated(TaskDTO.UpdateValidationGroup.class)  @RequestBody TaskDTO dto) {
         return taskService.edit(dto);
     }
 
