@@ -1,9 +1,7 @@
 package com.example.taskmanager.status;
 
-import com.example.taskmanager.exceptions.StateNotFoundExeption;
-import com.example.taskmanager.tasks.Task;
+import com.example.taskmanager.exceptions.StateNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -52,7 +50,7 @@ public class StateServiceImpl implements StateService{
     @Override
     public StateDTO delete(String uuid) {
         Optional<State> optionalState = null;//Optional.ofNullable(stateRepository.getByUUID(uuid));
-        State stateSearched = optionalState.orElseThrow(() -> new StateNotFoundExeption("State Not Found with UUID: " + uuid));
+        State stateSearched = optionalState.orElseThrow(() -> new StateNotFoundException("State Not Found with UUID: " + uuid));
         State deletedState = null;//stateRepository.delete(stateSearched);
         return stateMapper.toDTO(deletedState);
     }

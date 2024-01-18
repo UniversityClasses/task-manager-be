@@ -3,7 +3,9 @@ package com.example.taskmanager.tasks;
 import com.example.taskmanager.categories.Category;
 import com.example.taskmanager.categories.CategoryRepository;
 import com.example.taskmanager.categories.CategoryDTO;
+import com.example.taskmanager.exceptions.CategoryNotFoundException;
 import com.example.taskmanager.exceptions.TaskNotFoundException;
+import com.example.taskmanager.exceptions.StateNotFoundException;
 import com.example.taskmanager.status.State;
 import com.example.taskmanager.status.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,23 +75,37 @@ public class TaskServiceBean implements TaskService {
     @Override
     public TaskDTO edit(TaskDTO taskDTO) {
         Optional<Task> optionalTask = taskRepository.getTaskByUuid(taskDTO.getUuid());
-        List<Category> categories = Collections.emptyList();
+
+        if (optionalTask.isEmpty()) {
+            throw new TaskNotFoundException(taskDTO.getUuid().toString());
+        }
+
+
+        List<Category> categories;
         State status = null;
         if (!CollectionUtils.isEmpty(taskDTO.getCategories())) {
-            categories = categoryRepository.findAllByUuidIn(taskDTO.getCategories().stream().map(CategoryDTO::getUuid).toList());
-            // TODO: ADD EXCEPTION WHEN CATEGORY DO NOT EXIST.
+            List<UUID> categoriesUuids = taskDTO.getCategories().stream().map(CategoryDTO::getUuid).toList();
+            categories = categoryRepository.findAllByUuidIn(categoriesUuids);
+            List<UUID> missingIds = categoriesUuids.stream()
+                    .filter(id1 -> categories.stream().noneMatch(obj2 -> obj2.getUuid().equals(id1)))
+                    .toList();
+
+
+            if (!CollectionUtils.isEmpty(missingIds)) {
+                throw new CategoryNotFoundException(missingIds.stream().map(UUID::toString).collect(Collectors.joining(", ")));
+            }
+        } else {
+            categories = Collections.emptyList();
         }
 
         if (taskDTO.getStatus() != null && taskDTO.getStatus().getUuid() != null) {
-
             Optional<State> statusByUuid = statusRepository.getStatusByUuid(taskDTO.getStatus().getUuid());
-            // TODO: ADD EXCEPTION WHEN STATUS DO NOT EXIST.
             if (statusByUuid.isPresent()) {
                 status = statusByUuid.get();
+            } else {
+                throw new StateNotFoundException(taskDTO.getStatus().getUuid().toString());
             }
         }
-
-        // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
         Task task = optionalTask.get();
         task.setDescription(taskDTO.getDescription());

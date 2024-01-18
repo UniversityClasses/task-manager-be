@@ -1,6 +1,5 @@
 package com.example.taskmanager.status;
-import com.example.taskmanager.exceptions.CategoryNotFoundExeption;
-import com.example.taskmanager.exceptions.StateNotFoundExeption;
+import com.example.taskmanager.exceptions.StateNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class StateController {
                     .status(HttpStatus.OK)
                     .body(stateDtoSearched);
         }
-        catch(StateNotFoundExeption exeption){
+        catch(StateNotFoundException exeption){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);
@@ -48,7 +47,7 @@ public class StateController {
                     .status(HttpStatus.OK)
                     .body(stateDtoEdited);
         }
-        catch(StateNotFoundExeption exeption){
+        catch(StateNotFoundException exeption){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);
@@ -63,7 +62,7 @@ public class StateController {
                     .status(HttpStatus.OK)
                     .body(stateDtoDeleted);
         }
-        catch(StateNotFoundExeption exeption){
+        catch(StateNotFoundException exeption){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);

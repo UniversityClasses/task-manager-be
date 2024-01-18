@@ -1,6 +1,6 @@
 package com.example.taskmanager.categories;
 
-import com.example.taskmanager.exceptions.CategoryNotFoundExeption;
+import com.example.taskmanager.exceptions.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +32,7 @@ public class CategoryController {
                     .status(HttpStatus.OK)
                     .body(categoryDtoSearched);
         }
-        catch(CategoryNotFoundExeption exeption){
+        catch(CategoryNotFoundException exeption){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);
@@ -47,7 +47,7 @@ public class CategoryController {
                     .status(HttpStatus.OK)
                     .body(categoryDtoEdited);
         }
-        catch(CategoryNotFoundExeption exeption){
+        catch(CategoryNotFoundException exeption){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);
@@ -62,7 +62,7 @@ public class CategoryController {
                     .status(HttpStatus.OK)
                     .body(categoryDtoDeleted);
         }
-        catch(CategoryNotFoundExeption exeption){
+        catch(CategoryNotFoundException exeption){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);

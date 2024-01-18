@@ -25,7 +25,7 @@ import java.util.UUID;
 @Where(clause = "deleted = false")
 public class Task extends ModelBase {
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.PERSIST},fetch = FetchType.EAGER)
     @JoinTable(name = "task_category",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
