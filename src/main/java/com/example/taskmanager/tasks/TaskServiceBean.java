@@ -4,7 +4,7 @@ import com.example.taskmanager.category.Category;
 import com.example.taskmanager.category.CategoryDTO;
 import com.example.taskmanager.category.CategoryRepository;
 import com.example.taskmanager.exceptions.CategoryNotFoundException;
-import com.example.taskmanager.exceptions.StatusNotFound;
+import com.example.taskmanager.exceptions.StatusNotFoundException;
 import com.example.taskmanager.exceptions.TaskNotFoundException;
 import com.example.taskmanager.status.Status;
 import com.example.taskmanager.status.StatusRepository;
@@ -106,7 +106,7 @@ public class TaskServiceBean implements TaskService {
             if (statusByUuid.isPresent()) {
                 status = statusByUuid.get();
             } else {
-                throw new StatusNotFound(taskDTO.getStatus().getUuid().toString());
+                throw new StatusNotFoundException(taskDTO.getStatus().getUuid().toString());
             }
         }
 

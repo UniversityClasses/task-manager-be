@@ -1,17 +1,10 @@
 package com.example.taskmanager.category;
 
 import com.example.taskmanager.exceptions.CategoryNotFoundException;
-import com.example.taskmanager.exceptions.StatusNotFound;
-import com.example.taskmanager.exceptions.TaskNotFoundException;
-import com.example.taskmanager.status.Status;
-import com.example.taskmanager.status.StatusRepository;
-import com.example.taskmanager.tasks.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
