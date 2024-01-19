@@ -36,6 +36,7 @@ public class Task extends ModelBase {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "status_id", nullable = true)
+    @JsonManagedReference
     private State status;
 
     public Task(){}

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/states")
@@ -14,8 +15,8 @@ public class StateController {
     private StateService stateService;
 
     @GetMapping
-    public List<StateDTO> getAll(){
-        return stateService.getAll();
+    public List<StateDTO> getAll(@RequestParam(value = "taskId", required = false) List<String> taskIdList){
+        return stateService.getAll(taskIdList);
     }
 
     @PostMapping
@@ -27,7 +28,7 @@ public class StateController {
     @GetMapping("/{uuid}")
     public ResponseEntity<StateDTO> getOne(@PathVariable String uuid) {
         try{
-            StateDTO stateDtoSearched = stateService.getOne(uuid);
+            StateDTO stateDtoSearched = stateService.getOne(UUID.fromString(uuid));
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(stateDtoSearched);
@@ -57,7 +58,7 @@ public class StateController {
     @DeleteMapping("/{uuid}")
     public ResponseEntity<StateDTO> delete(@PathVariable  String uuid) {
         try{
-            StateDTO stateDtoDeleted = stateService.delete(uuid);
+            StateDTO stateDtoDeleted = stateService.delete(UUID.fromString(uuid));
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(stateDtoDeleted);

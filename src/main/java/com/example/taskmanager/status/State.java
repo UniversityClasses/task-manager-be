@@ -2,6 +2,7 @@ package com.example.taskmanager.status;
 
 import com.example.taskmanager.Generics.ModelBase;
 import com.example.taskmanager.tasks.Task;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class State extends ModelBase {
 
     @OneToMany(mappedBy = "status", cascade = CascadeType.PERSIST)
+    @JsonBackReference
     private List<Task> tasks;
 
     public State() {
@@ -35,5 +37,12 @@ public class State extends ModelBase {
         super.setUuid(uuid);
         super.setName(name);
         super.setDescription(description);
+    }
+
+    public State(UUID uuid, String name, String description, List<Task> tasks) {
+        super.setUuid(uuid);
+        super.setName(name);
+        super.setDescription(description);
+        this.tasks = tasks;
     }
 }
