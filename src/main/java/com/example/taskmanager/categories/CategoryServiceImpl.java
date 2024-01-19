@@ -1,11 +1,16 @@
 package com.example.taskmanager.categories;
 
 import com.example.taskmanager.exceptions.CategoryNotFoundException;
+import com.example.taskmanager.exceptions.TaskNotFoundException;
+import com.example.taskmanager.tasks.TaskDTO;
+import com.example.taskmanager.tasks.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import com.example.taskmanager.tasks.Task;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -16,9 +21,15 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<CategoryDTO> getAll() {
-        return  categoryRepository
-                .findAll()
+    @Autowired
+    private TaskRepository taskRepository;
+
+    public List<CategoryDTO> getAll(List<String> taskIdList) {
+        List<Category> categories =
+                (!CollectionUtils.isEmpty(taskIdList))
+                ? categoryRepository.findAllByTasks_UuidIn(taskIdList):
+                categoryRepository.findAll();
+        return  categories
                 .stream()
                 .map(category -> mapper.toDTO(category))
                 .collect(Collectors.toList());
@@ -26,34 +37,69 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryDTO create(CategoryDTO dto) {
+        List<Task> tasks = Collections.emptyList();
+        Set<TaskDTO> taskDTOS = dto.getTasks();
+        if(!CollectionUtils.isEmpty(taskDTOS)){
+            tasks = taskRepository.findAllByUuidIn(taskDTOS.stream().map(TaskDTO::getUuid).toList());
+            if(CollectionUtils.isEmpty(tasks)){
+               throw new TaskNotFoundException(taskDTOS.stream().map(TaskDTO::getUuid).toList().toString());
+            }
+        }
         Category category = mapper.toModel(dto);
-        Category savedCategory = categoryRepository.save(category);
-        return mapper.toDTO(savedCategory);
+        category.setTasks(new HashSet<>(tasks));
+        Category saveCategory = categoryRepository.save(category);
+        return mapper.toDTO(saveCategory);
     }
 
     @Override
-    public CategoryDTO getOne(String uuid) {
-        Category categorySearched = null;//categoryRepository.findOne(Example.of());
-        if (categorySearched != null)
-            return mapper.toDTO(categorySearched);
-        else return null;
+    public CategoryDTO getOne(UUID uuid) {
+        Category category = new Category(uuid);
+        Optional<Category> categorySearched = categoryRepository.findOne(Example.of(category));
+        if(categorySearched.isEmpty()){
+            throw new CategoryNotFoundException(uuid.toString());
+        }
+        return mapper.toDTO(categorySearched.get());
     }
 
     @Override
     public CategoryDTO edit(CategoryDTO dto) {
-        Category categorySearched = null;//categoryRepository.getByUUID(dto.getUuid());
-        if (categorySearched != null){
-            Category updateCategory = null; //categoryRepository.edit(categorySearched,dto);
-            return mapper.toDTO(updateCategory);
+        Optional<Category> categoryEdit = categoryRepository.getCategoryByUuid(dto.getUuid());
+        if(categoryEdit.isEmpty()){
+            throw new CategoryNotFoundException(dto.getUuid().toString());
         }
-        else return null;
+        List<Task> tasks;
+        Set<TaskDTO> taskDTOS = dto.getTasks();
+        if(!CollectionUtils.isEmpty(taskDTOS)){
+            List<UUID> taskUuids = taskDTOS.stream().map(TaskDTO::getUuid).toList();
+            tasks = taskRepository.findAllByUuidIn(taskUuids);
+            List<UUID> missingIds = taskUuids.stream()
+                    .filter(id1 -> tasks.stream().noneMatch(id2->id2.getUuid().equals(id1)))
+                    .toList();
+
+            if(!CollectionUtils.isEmpty(missingIds)){
+                throw new TaskNotFoundException(missingIds.stream().map(UUID::toString).collect(Collectors.joining(", ")));
+            }
+        }
+        else{
+           tasks = Collections.emptyList();
+        }
+      Category category =  categoryEdit.get();
+      category.setName(dto.getName());
+      category.setDescription(dto.getDescription());
+      category.setTasks(new HashSet<>(tasks));
+      categoryRepository.save(category);
+      return mapper.toDTO(category);
     }
 
     @Override
-    public CategoryDTO delete(String uuid) {
-        Optional<Category> optionalCategory = null;//Optional.ofNullable(categoryRepository.getByUUID(uuid));
-        Category stateSearched = optionalCategory.orElseThrow(() -> new CategoryNotFoundException(uuid));
-        Category categoryDeleted = null;//categoryRepository.delete(stateSearched);
-        return mapper.toDTO(categoryDeleted);
+    public CategoryDTO delete(UUID uuid) {
+        Optional<Category> categorySearched = categoryRepository.getCategoryByUuid(uuid);
+        if(categorySearched.isEmpty()){
+            throw new CategoryNotFoundException(uuid.toString());
+        }
+        Category category = categorySearched.get();
+        CategoryDTO categoryDTO = mapper.toDTO(category);
+        categoryRepository.delete(category);
+        return categoryDTO;
     }
 }

@@ -13,4 +13,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findAllByCategories_UuidIn(List<String> categories);
     List<Task> findAllByStatus_UuidIn(List<String> status);
     List<Task> findAllByCategories_UuidInAndStatus_UuidIn(List<String> categories, List<String> status);
+
+    List<Task> findAllByUuidIn(List<UUID> list);
 }

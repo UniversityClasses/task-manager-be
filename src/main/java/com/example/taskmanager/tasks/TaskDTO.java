@@ -38,6 +38,12 @@ public class TaskDTO {
         this.status = status;
     }
 
+    public TaskDTO(UUID uuid, String name, String description) {
+        this.uuid = uuid;
+        this.name = name;
+        this.description = description;
+    }
+
     public interface CreateValidationGroup {
 
     }

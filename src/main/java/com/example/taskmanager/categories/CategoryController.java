@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/categories")
@@ -15,8 +16,8 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryDTO> getAll(){
-        return categoryService.getAll();
+    public List<CategoryDTO> getAll(@RequestParam(value = "taskId", required = false) List<String> taskIdList){
+        return categoryService.getAll(taskIdList);
     }
 
     @PostMapping
@@ -27,7 +28,7 @@ public class CategoryController {
     @GetMapping("/{uuid}")
     public ResponseEntity<CategoryDTO> getOne(@PathVariable String uuid) {
         try{
-            CategoryDTO categoryDtoSearched = categoryService.getOne(uuid);
+            CategoryDTO categoryDtoSearched = categoryService.getOne(UUID.fromString(uuid));
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(categoryDtoSearched);
@@ -57,7 +58,7 @@ public class CategoryController {
     @DeleteMapping("/{uuid}")
     public ResponseEntity<CategoryDTO> delete(@PathVariable  String uuid) {
         try{
-            CategoryDTO categoryDtoDeleted = categoryService.delete(uuid);
+            CategoryDTO categoryDtoDeleted = categoryService.delete(UUID.fromString(uuid));
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(categoryDtoDeleted);

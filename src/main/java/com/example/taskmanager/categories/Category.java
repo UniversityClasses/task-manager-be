@@ -2,9 +2,8 @@ package com.example.taskmanager.categories;
 
 import com.example.taskmanager.Generics.ModelBase;
 import com.example.taskmanager.tasks.Task;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.PrePersist;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.SQLDelete;
@@ -29,7 +28,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 public class Category extends ModelBase {
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories",fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<Task> tasks = new HashSet<>();
     public Category() {
     }
@@ -42,5 +42,11 @@ public class Category extends ModelBase {
         super.setUuid(uuid);
         super.setName(name);
         super.setDescription(description);
+    }
+    public Category(UUID uuid, String name, String description, Set<Task> tasks) {
+        super.setUuid(uuid);
+        super.setName(name);
+        super.setDescription(description);
+        this.tasks = tasks;
     }
 }
