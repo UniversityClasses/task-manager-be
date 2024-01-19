@@ -2,22 +2,40 @@ package com.example.taskmanager.tasks;
 
 import com.example.taskmanager.category.Category;
 import com.example.taskmanager.category.CategoryDTO;
-import com.example.taskmanager.status.Status;
-import com.example.taskmanager.status.StatusDTO;
+import com.example.taskmanager.category.CategoryMapper;
+import com.example.taskmanager.status.StatusMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TaskMapper {
-    public TaskDTO toDTO(Task task) {
-        CategoryDTO categoryDTO= new CategoryDTO(task.getCategory().getUuid(),task.getCategory().getName(),task.getCategory().getDescription());
-        StatusDTO statusDTO = new StatusDTO(task.getStatus().getUuid(),task.getStatus().getName());
 
-        return new TaskDTO(task.getUuid(), task.getName(), task.getDescription(), categoryDTO,statusDTO);
+    @Autowired
+    private CategoryMapper categoryMapper;
+
+    @Autowired
+    private StatusMapper statusMapper;
+
+    public TaskDTO toDTO(Task task) {
+        List<CategoryDTO> categories = Optional.ofNullable(task.getCategories())
+                .orElseGet(Arrays::asList)
+                .stream()
+                .map(c -> categoryMapper.toDTO(c))
+                .toList();
+
+        return new TaskDTO(task.getUuid(), task.getName(), task.getDescription(), categories, statusMapper.toDTO(task.getStatus()));
     }
 
     public Task toModel(TaskDTO dto) {
-        Category category = new Category(dto.getName(),dto.getDescription(),dto.getUuid());
-        Status status = new Status(dto.getName(), dto.getUuid());
-        return new Task(dto.getName(), dto.getDescription(), category,status,dto.getUuid());
+        List<Category> categories = Optional.ofNullable(dto.getCategories())
+                .orElseGet(Arrays::asList)
+                .stream()
+                .map(c -> categoryMapper.toModel(c))
+                .toList();
+        return new Task(dto.getName(), dto.getDescription(), categories, statusMapper.toModel(dto.getStatus()), dto.getUuid());
     }
 }

@@ -1,18 +1,10 @@
 package com.example.taskmanager.status;
 
-import org.springframework.data.domain.Example;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface StatusRepository {
-    Collection<Status> findAll();
-
-    Status save(Status status);
-
-    Optional<Status> findOne(Example<Status> of);
-
-    void delete(Status status);
-
-    Status findOneByUuid(String uuid);
+public interface StatusRepository extends JpaRepository<Status, Long> {
+    Optional<Status> getStatusByUuid(UUID uuid);
 }

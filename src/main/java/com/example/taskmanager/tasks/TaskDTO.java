@@ -2,29 +2,44 @@ package com.example.taskmanager.tasks;
 
 import com.example.taskmanager.category.CategoryDTO;
 import com.example.taskmanager.status.StatusDTO;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.Size;
+
+import java.util.List;
+import java.util.UUID;
+
 
 public class TaskDTO {
-    private String uuid;
+
+    @NotNull(message = "Uuid cannot be null", groups = {UpdateValidationGroup.class})
+    @Null(message = "Uuid should be null", groups = {CreateValidationGroup.class})
+    private UUID uuid;
+    @NotBlank(message="Name cannot be blank")
+    @Size(max = 200, min = 3)
     private String name;
+    @NotBlank(message="Description cannot be blank")
+    @Size(max = 2000, min = 3)
     private String description;
-    private CategoryDTO category;
+    private List<CategoryDTO> categories;
     private StatusDTO status;
 
     public TaskDTO() {}
 
-    public TaskDTO(String uuid, String name, String description, CategoryDTO category, StatusDTO status) {
+    public TaskDTO(UUID uuid, String name, String description, List<CategoryDTO> categories, StatusDTO status) {
         this.uuid = uuid;
         this.name = name;
         this.description = description;
-        this.category = category;
+        this.categories = categories;
         this.status = status;
     }
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -44,12 +59,12 @@ public class TaskDTO {
         this.description = description;
     }
 
-    public CategoryDTO getCategory() {
-        return category;
+    public List<CategoryDTO> getCategories() {
+        return categories;
     }
 
-    public void setCategory(CategoryDTO category) {
-        this.category = category;
+    public void setCategories(List<CategoryDTO> categories) {
+        this.categories = categories;
     }
 
     public StatusDTO getStatus() {
@@ -59,4 +74,13 @@ public class TaskDTO {
     public void setStatus(StatusDTO status) {
         this.status = status;
     }
+
+    public interface CreateValidationGroup {
+
+    }
+    public interface UpdateValidationGroup {
+
+    }
 }
+
+

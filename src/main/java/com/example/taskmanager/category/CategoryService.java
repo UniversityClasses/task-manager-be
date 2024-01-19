@@ -1,6 +1,9 @@
 package com.example.taskmanager.category;
 
+import com.example.taskmanager.category.CategoryDTO;
+
 import java.util.List;
+import java.util.UUID;
 
 public interface CategoryService {
 
@@ -10,7 +13,9 @@ public interface CategoryService {
 
     CategoryDTO edit(CategoryDTO dto);
 
-    CategoryDTO getOne(String uuid);
+    CategoryDTO getOne(UUID uuid);
 
-    CategoryDTO delete(String uuid);
+    CategoryDTO delete(UUID uuid);
+
+
 }

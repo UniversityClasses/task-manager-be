@@ -1,22 +1,43 @@
 package com.example.taskmanager.category;
 
-public class CategoryDTO {
-    private String uuid;
-    private String name;
-    private String description;
-    public CategoryDTO() {}
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.Size;
 
-    public CategoryDTO(String uuid, String name, String description) {
+import java.util.UUID;
+
+public class CategoryDTO {
+
+    @NotNull(message = "Uuid cannot be null", groups = {UpdateValidationGroup.class})
+    @Null(message = "Uuid should be null", groups = {CreateValidationGroup.class})
+    private UUID uuid;
+    @NotBlank(message="Name cannot be blank")
+    @Size(max = 200, min = 3)
+    private String name;
+    @NotBlank(message="Description cannot be blank")
+    @Size(max = 2000, min = 3)
+    private String description;
+
+    public CategoryDTO(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public CategoryDTO() {
+    }
+
+
+    public CategoryDTO(UUID uuid, String name, String description) {
         this.uuid = uuid;
         this.name = name;
         this.description = description;
     }
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -36,4 +57,10 @@ public class CategoryDTO {
         this.description = description;
     }
 
+    public interface CreateValidationGroup {
+
+    }
+    public interface UpdateValidationGroup {
+
+    }
 }
