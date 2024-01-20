@@ -1,5 +1,6 @@
 package com.example.taskmanager.status;
 
+import com.example.taskmanager.category.Category;
 import com.example.taskmanager.tasks.Task;
 import jakarta.persistence.*;
 import org.hibernate.annotations.SQLDelete;
@@ -46,6 +47,9 @@ public class Status {
 
     @OneToMany(mappedBy = "status", cascade = CascadeType.PERSIST)
     private List<Task> tasks;
+
+    @OneToOne(mappedBy = "status")
+    private Category category;
 
     public Status() {
     }
@@ -135,5 +139,22 @@ public class Status {
     @PrePersist
     public void initializeUuid() {
         this.setUuid(UUID.randomUUID());
+    }
+
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
