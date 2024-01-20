@@ -3,6 +3,7 @@ import com.example.taskmanager.exceptions.status.StateNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class StateController {
     }
 
     @PostMapping
-    public StateDTO create(@RequestBody StateDTO dto){
+    public StateDTO create(@Validated(StateDTO.CreateValidationGroup.class) @RequestBody StateDTO dto){
         return stateService.create(dto);
     }
 
@@ -41,7 +42,7 @@ public class StateController {
     }
 
     @PutMapping
-    public ResponseEntity<StateDTO> edit(@RequestBody StateDTO dto) {
+    public ResponseEntity<StateDTO> edit(@Validated(StateDTO.UpdateValidationGroup.class) @RequestBody StateDTO dto) {
         try{
             StateDTO stateDtoEdited = stateService.edit(dto);
             return ResponseEntity

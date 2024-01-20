@@ -4,6 +4,7 @@ import com.example.taskmanager.exceptions.categories.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryDTO create(@RequestBody CategoryDTO dto){
+    public CategoryDTO create(@Validated(CategoryDTO.CreateValidationGroup.class) @RequestBody CategoryDTO dto){
         return categoryService.create(dto);
     }
 
@@ -41,7 +42,7 @@ public class CategoryController {
     }
 
     @PutMapping
-    public ResponseEntity<CategoryDTO> edit(@RequestBody CategoryDTO dto) {
+    public ResponseEntity<CategoryDTO> edit(@Validated(CategoryDTO.UpdateValidationGroup.class) @RequestBody CategoryDTO dto) {
         try{
             CategoryDTO categoryDtoEdited = categoryService.edit(dto);
             return ResponseEntity

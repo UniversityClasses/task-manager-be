@@ -18,11 +18,14 @@ public class CategoryDTO {
     @Null(message = "Uuid should be null", groups = {CategoryDTO.CreateValidationGroup.class})
     private UUID uuid;
 
-    @NotBlank(message="Name cannot be blank")
-    @Size(max = 200, min = 5)
+    @NotBlank(message="Name cannot be blank",groups = {
+            CategoryDTO.CreateValidationGroup.class,CategoryDTO.UpdateValidationGroup.class})
+    @Size(max = 200, min = 5, groups = {
+            CategoryDTO.CreateValidationGroup.class,CategoryDTO.UpdateValidationGroup.class})
     private String name;
 
-    @NotBlank(message="Description cannot be blank")
+    @NotBlank(message="Description cannot be blank", groups = {
+            CategoryDTO.CreateValidationGroup.class,CategoryDTO.UpdateValidationGroup.class})
     @Size(max = 2000, min = 5)
     private String description;
 
