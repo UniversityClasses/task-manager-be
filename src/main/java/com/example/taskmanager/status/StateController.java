@@ -27,18 +27,8 @@ public class StateController {
 
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<StateDTO> getOne(@PathVariable String uuid) {
-        try{
-            StateDTO stateDtoSearched = stateService.getOne(UUID.fromString(uuid));
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(stateDtoSearched);
-        }
-        catch(StateNotFoundException exeption){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(null);
-        }
+    public StateDTO getOne(@PathVariable String uuid) {
+            return stateService.getOne(UUID.fromString(uuid));
     }
 
     @PutMapping
@@ -57,17 +47,7 @@ public class StateController {
     }
 
     @DeleteMapping("/{uuid}")
-    public ResponseEntity<StateDTO> delete(@PathVariable  String uuid) {
-        try{
-            StateDTO stateDtoDeleted = stateService.delete(UUID.fromString(uuid));
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(stateDtoDeleted);
-        }
-        catch(StateNotFoundException exeption){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(null);
-        }
+    public StateDTO delete(@PathVariable  String uuid) {
+            return stateService.delete(UUID.fromString(uuid));
     }
 }

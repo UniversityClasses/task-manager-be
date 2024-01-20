@@ -42,32 +42,12 @@ public class CategoryController {
     }
 
     @PutMapping
-    public ResponseEntity<CategoryDTO> edit(@Validated(CategoryDTO.UpdateValidationGroup.class) @RequestBody CategoryDTO dto) {
-        try{
-            CategoryDTO categoryDtoEdited = categoryService.edit(dto);
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(categoryDtoEdited);
-        }
-        catch(CategoryNotFoundException exeption){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(null);
-        }
+    public CategoryDTO edit(@Validated(CategoryDTO.UpdateValidationGroup.class) @RequestBody CategoryDTO dto) {
+       return categoryService.edit(dto);
     }
 
     @DeleteMapping("/{uuid}")
-    public ResponseEntity<CategoryDTO> delete(@PathVariable  String uuid) {
-        try{
-            CategoryDTO categoryDtoDeleted = categoryService.delete(UUID.fromString(uuid));
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(categoryDtoDeleted);
-        }
-        catch(CategoryNotFoundException exeption){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(null);
-        }
+    public CategoryDTO delete(@PathVariable  String uuid) {
+            return categoryService.delete(UUID.fromString(uuid));
     }
 }
