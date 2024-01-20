@@ -8,7 +8,10 @@ import java.util.*;
 @Component
 public class StateMapper {
     public StateDTO toDTO(State status) {
-        List<Task> tasks = status.getTasks();
+        if (status == null){
+            return  null;
+        }
+        List<Task> tasks = status.getTasks();;
         return new StateDTO(
                 status.getUuid(),
                 status.getName(),
@@ -17,6 +20,9 @@ public class StateMapper {
     }
 
     public State toModel(StateDTO dto) {
+        if (dto == null){
+            return null;
+        }
         return new State(dto.getUuid(), dto.getName(), dto.getDescription(),null);
     }
 

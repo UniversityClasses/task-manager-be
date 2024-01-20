@@ -2,7 +2,6 @@ package com.example.taskmanager.Generics;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
