@@ -1,8 +1,8 @@
 package com.example.taskmanager.status;
 
 
-import com.example.taskmanager.exceptions.StateNotFoundException;
-import com.example.taskmanager.exceptions.TaskNotFoundException;
+import com.example.taskmanager.exceptions.status.StateNotFoundException;
+import com.example.taskmanager.exceptions.tasks.TaskNotFoundException;
 import com.example.taskmanager.tasks.Task;
 import com.example.taskmanager.tasks.TaskDTO;
 import com.example.taskmanager.tasks.TaskRepository;

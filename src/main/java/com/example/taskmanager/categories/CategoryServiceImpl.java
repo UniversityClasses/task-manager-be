@@ -1,7 +1,7 @@
 package com.example.taskmanager.categories;
 
-import com.example.taskmanager.exceptions.CategoryNotFoundException;
-import com.example.taskmanager.exceptions.TaskNotFoundException;
+import com.example.taskmanager.exceptions.categories.CategoryNotFoundException;
+import com.example.taskmanager.exceptions.tasks.TaskNotFoundException;
 import com.example.taskmanager.tasks.TaskDTO;
 import com.example.taskmanager.tasks.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;

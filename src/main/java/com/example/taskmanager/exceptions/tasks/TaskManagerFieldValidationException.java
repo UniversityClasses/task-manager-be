@@ -1,4 +1,4 @@
-package com.example.taskmanager.exceptions;
+package com.example.taskmanager.exceptions.tasks;
 
 import java.util.Date;
 import java.util.Map;
