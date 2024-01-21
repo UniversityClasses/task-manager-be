@@ -15,5 +15,4 @@ public interface TaskService {
 
     TaskDTO delete(UUID uuid);
 
-
 }

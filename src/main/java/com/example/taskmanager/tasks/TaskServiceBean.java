@@ -39,10 +39,10 @@ public class TaskServiceBean implements TaskService {
 
         List<Task> tasks =
                 (!CollectionUtils.isEmpty(categoryIdList) && !CollectionUtils.isEmpty(statusIdList))
-                ? taskRepository.findAllByCategories_UuidInAndStatus_UuidIn(categoryIdList, statusIdList) :
-                !CollectionUtils.isEmpty(categoryIdList) ? taskRepository.findAllByCategories_UuidIn(categoryIdList) :
-                !CollectionUtils.isEmpty(statusIdList) ? taskRepository.findAllByStatus_UuidIn(statusIdList) :
-                taskRepository.findAll();
+                        ? taskRepository.findAllByCategories_UuidInAndStatus_UuidIn(categoryIdList, statusIdList) :
+                        !CollectionUtils.isEmpty(categoryIdList) ? taskRepository.findAllByCategories_UuidIn(categoryIdList) :
+                                !CollectionUtils.isEmpty(statusIdList) ? taskRepository.findAllByStatus_UuidIn(statusIdList) :
+                                        taskRepository.findAll();
 
         return tasks
                 .stream()
@@ -126,7 +126,7 @@ public class TaskServiceBean implements TaskService {
         Optional<Task> task1 = taskRepository.findOne(Example.of(task));
 
 //        Optional<Task> task = taskRepository.getTaskByUuid(uuid);
-        
+
         // TODO: ADD EXCEPTION WHEN TASK DO NOT EXIST.
 
 
