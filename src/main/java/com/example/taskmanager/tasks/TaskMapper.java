@@ -21,13 +21,13 @@ public class TaskMapper {
     private StateMapper statusMapper;
 
     public TaskDTO toDTO(Task task) {
-        List<CategoryDTO> categories = Optional.ofNullable(task.getCategories())
-                .orElseGet(Arrays::asList)
-                .stream()
-                .map(c -> categoryMapper.toDTO(c))
-                .toList();
 
-        return new TaskDTO(task.getUuid(), task.getName(), task.getDescription(), categories, statusMapper.toDTO(task.getStatus()));
+            List<CategoryDTO> categories = Optional.ofNullable(task.getCategories())
+                    .orElseGet(Arrays::asList)
+                    .stream()
+                    .map(c -> categoryMapper.toDTO(c))
+                    .toList();
+            return new TaskDTO(task.getUuid(), task.getName(), task.getDescription(), categories, statusMapper.toDTO(task.getStatus()));
     }
 
     public Task toModel(TaskDTO dto) {

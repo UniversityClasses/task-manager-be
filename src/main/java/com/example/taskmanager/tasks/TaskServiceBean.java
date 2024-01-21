@@ -8,6 +8,7 @@ import com.example.taskmanager.exceptions.tasks.TaskNotFoundException;
 import com.example.taskmanager.exceptions.status.StateNotFoundException;
 import com.example.taskmanager.status.State;
 import com.example.taskmanager.status.StateRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
@@ -140,6 +141,7 @@ public class TaskServiceBean implements TaskService {
     }
 
     @Override
+    @Transactional
     public TaskDTO delete(UUID uuid) {
         Optional<Task> optionalTask = taskRepository.getTaskByUuid(uuid);
 
@@ -150,7 +152,6 @@ public class TaskServiceBean implements TaskService {
 
         Task task = optionalTask.get();
         taskRepository.delete(task);
-
         return mapper.toDTO(task);
     }
 }
