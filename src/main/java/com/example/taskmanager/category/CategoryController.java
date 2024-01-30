@@ -1,6 +1,7 @@
 package com.example.taskmanager.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +20,11 @@ public class CategoryController {
     @GetMapping
     public List<CategoryDTO> getAll() {
         return categoryService.getAll();
+    }
+
+    @GetMapping("/")
+    public List<CategoryDTO> searchByNameDescrition(@Param("palabra") String palabra){
+        return categoryService.searchByNameDescrition(palabra);
     }
 
     @PostMapping

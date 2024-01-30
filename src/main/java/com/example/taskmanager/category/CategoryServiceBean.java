@@ -1,6 +1,7 @@
 package com.example.taskmanager.category;
 
 import com.example.taskmanager.exceptions.CategoryNotFoundException;
+import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
@@ -77,5 +78,13 @@ public class CategoryServiceBean implements CategoryService {
         Category category = optionalCategory.get();
         categoryRepository.delete(category);
         return mapper.toDTO(category);
+    }
+
+    @Override
+    public List<CategoryDTO> searchByNameDescrition(String palabra) {
+        return categoryRepository.searchByNameDescrition(palabra)
+                .stream()
+                .map(category -> mapper.toDTO(category))
+                .collect(Collectors.toList());
     }
 }

@@ -17,5 +17,5 @@ public interface CategoryService {
 
     CategoryDTO delete(UUID uuid);
 
-
+    List<CategoryDTO> searchByNameDescrition(String palabra);
 }
